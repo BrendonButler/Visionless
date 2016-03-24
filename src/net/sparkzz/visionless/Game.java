@@ -17,12 +17,12 @@ public class Game {
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public void post(String message) {
-        System.out.printf("%s%n", message);
-    }
-
     public String prompt() throws IOException {
         System.out.printf("> ");
         return reader.readLine();
+    }
+
+    public void post(String message) {
+        System.out.printf("%s%n", message);
     }
 }
