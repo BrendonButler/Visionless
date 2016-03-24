@@ -5,4 +5,9 @@ package net.sparkzz.visionless;
  */
 public class Visionless {
 
+    public static void main(String[] args) {
+        Game game = new Game();
+
+        game.post("test");
+    }
 }
