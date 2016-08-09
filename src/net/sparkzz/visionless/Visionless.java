@@ -2,9 +2,7 @@ package net.sparkzz.visionless;
 
 import net.sparkzz.modest.ModestGame;
 import net.sparkzz.modest.io.console.Console;
-import net.sparkzz.visionless.enemy.Zombie;
-
-import java.util.Random;
+import net.sparkzz.visionless.entity.Player;
 
 /**
  * Created by Brendon Butler on 3/23/2016.
@@ -21,14 +19,18 @@ public class Visionless extends ModestGame {
 
 	@Override
 	public void postInit() {
-		Zombie zombie = new Zombie();
+		Player player = new Player("Norman");
 
-		String input = Console.prompt("A Zombie appeared! What will you do?%n> ");
+		player.setHealth(20);
+		player.setMaxHealth(20);
+		player.setStrength(6);
+		player.setMagic(4);
+		player.setSpeed(5);
 
-		if (input.equalsIgnoreCase("attack")) {
-			Random random = new Random();
-			int damage = random.nextInt(20);
-			Console.outf("Zombie (%sHP)", zombie.getHealth() - damage);
-		}
+		Console.outf("Name: %s", player.getName());
+		Console.outf("HP: %s/%s", player.getHealth(), player.getMaxHealth());
+		Console.outf("STR: %s", player.getStrength());
+		Console.outf("MGK: %s", player.getMagic());
+		Console.outf("SPD: %s", player.getSpeed());
 	}
 }

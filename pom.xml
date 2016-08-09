@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>net.sparkzz</groupId>
 			<artifactId>ModestAPI</artifactId>
-			<version>0.1.3.14</version>
+			<version>1.0.6.15</version>
 		</dependency>
     </dependencies>
 </project>
