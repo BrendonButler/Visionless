@@ -18,7 +18,5 @@ public class Game {
 	public static void play(boolean newGame) {
 		if (newGame) newGame();
 		else loadGame();
-
-
 	}
 }

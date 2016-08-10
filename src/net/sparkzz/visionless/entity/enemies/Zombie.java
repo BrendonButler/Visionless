@@ -1,16 +1,21 @@
-package net.sparkzz.visionless.entity;
+package net.sparkzz.visionless.entity.enemies;
+
+import net.sparkzz.visionless.entity.Enemy;
 
 /**
  * @author Brendon Butler
  */
-public class Player implements BasicEntity {
+public class Zombie implements Enemy {
 
 	private String name;
-	private int health, magic, maxHealth, speed, strength;
+	private int health, maxHealth, speed, strength;
 
-	public Player(String name) {
+	public Zombie() {
+		name = "Zombie";
+	}
+
+	public Zombie(String name) {
 		this.name = name;
-		this.health = 0;
 	}
 
 	public String getName() {
@@ -19,10 +24,6 @@ public class Player implements BasicEntity {
 
 	public int getHealth() {
 		return health;
-	}
-
-	public int getMagic() {
-		return magic;
 	}
 
 	public int getMaxHealth() {
@@ -45,10 +46,6 @@ public class Player implements BasicEntity {
 		this.health = health;
 	}
 
-	public void setMagic(int magic) {
-		this.magic = magic;
-	}
-
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
 	}
@@ -61,7 +58,7 @@ public class Player implements BasicEntity {
 		this.strength = strength;
 	}
 
-	public void promptAttack() {
+	public void choseAttack() {
 
 	}
 }
