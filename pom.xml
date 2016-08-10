@@ -9,10 +9,10 @@
     <version>0.0.1</version>
 
     <dependencies>
-		<dependency>
-			<groupId>net.sparkzz</groupId>
-			<artifactId>ModestAPI</artifactId>
-			<version>1.0.6.15</version>
-		</dependency>
+        <dependency>
+            <groupId>net.sparkzz</groupId>
+            <artifactId>ModestAPI</artifactId>
+            <version>1.0.6.15</version>
+        </dependency>
     </dependencies>
 </project>
