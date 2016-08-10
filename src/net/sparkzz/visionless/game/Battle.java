@@ -55,7 +55,7 @@ public class Battle {
 
 			if (isHit(fighters[second], fighters[first], attacks[second])) {
 				fighters[first].hit(calculateDamage(fighters[second], fighters[first], attacks[second]));
-				Console.outf("%s used %s!", fighters[second].getName(), attacks[second].getName().);
+				Console.outf("%s used %s!", fighters[second].getName(), attacks[second].getName());
 
 				if (fighters[first].getHealth() == 0) return fighters[second];
 			} else Console.outf("%s's attack missed!", fighters[second].getName());

@@ -60,8 +60,16 @@ public class Zombie implements Enemy {
 		return strength;
 	}
 
-	public void hit(int damage) {
+	public void addAttack(Attack attack) {
+		attacks.add(attack);
+	}
 
+	public void hit(int damage) {
+		health -= damage;
+	}
+
+	public void removeAttack(Attack attack) {
+		attacks.remove(attack);
 	}
 
 	public void setAccuracy(int accuracy) {

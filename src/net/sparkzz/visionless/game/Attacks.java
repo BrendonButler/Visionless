@@ -8,13 +8,13 @@ import java.util.Map;
  */
 public class Attacks {
 
-	private Map<String, Attack> attacks = new HashMap<>();
+	private static Map<String, Attack> attacks = new HashMap<>();
 
-	public void addAttack(Attack attack) {
-		attacks.put(attack.getName(), attack);
+	public static Attack get(String name) {
+		return attacks.get(name);
 	}
 
-	public void getAttack(String name) {
-		attacks.get(name);
+	public static void add(Attack attack) {
+		attacks.put(attack.getName(), attack);
 	}
 }

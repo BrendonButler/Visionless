@@ -3,11 +3,26 @@ package net.sparkzz.visionless.game;
 /**
  * @author Brendon Butler
  */
-public interface Attack {
+public class Attack {
 
-	int getAccuracy();
+	private int accuracy, damage;
+	private String name;
 
-	int getDamage();
+	public Attack(String name, int damage, int accuracy) {
+		this.name = name;
+		this.damage = damage;
+		this.accuracy = accuracy;
+	}
 
-	String getName();
+	public int getAccuracy() {
+		return accuracy;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

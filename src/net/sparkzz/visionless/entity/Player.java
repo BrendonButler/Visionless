@@ -35,7 +35,7 @@ public class Player implements BasicEntity {
 		if (Validate.isNumber(response))
 			responseID = Integer.parseInt(response);
 
-		return attacks.get(responseID);
+		return attacks.get(responseID - 1);
 	}
 
 	public String getName() {
@@ -70,8 +70,16 @@ public class Player implements BasicEntity {
 		return strength;
 	}
 
+	public void addAttack(Attack attack) {
+		attacks.add(attack);
+	}
+
 	public void hit(int damage) {
 		health -= damage;
+	}
+
+	public void removeAttack(Attack attack) {
+		attacks.remove(attack);
 	}
 
 	public void setAccuracy(int accuracy) {

@@ -23,7 +23,11 @@ public interface BasicEntity {
 
 	int getStrength();
 
+	void addAttack(Attack attack);
+
 	void hit(int damage);
+
+	void removeAttack(Attack attack);
 
 	void setAccuracy(int accuracy);
 
