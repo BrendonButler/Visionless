@@ -6,9 +6,21 @@
 
     <groupId>net.sparkzz</groupId>
     <artifactId>Visionless</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-    <dependencies>
+	<dependencies>
         <dependency>
             <groupId>net.sparkzz</groupId>
             <artifactId>ModestAPI</artifactId>

@@ -5,5 +5,4 @@ package net.sparkzz.visionless.entity;
  */
 public interface Enemy extends BasicEntity {
 
-	void choseAttack();
 }

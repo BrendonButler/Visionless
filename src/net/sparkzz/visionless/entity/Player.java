@@ -1,20 +1,53 @@
 package net.sparkzz.visionless.entity;
 
+import net.sparkzz.modest.io.console.Console;
+import net.sparkzz.modest.utils.Validate;
+import net.sparkzz.visionless.game.Attack;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Brendon Butler
  */
 public class Player implements BasicEntity {
 
 	private String name;
-	private int health, magic, maxHealth, speed, strength;
+	private int accuracy, evasiveness, health, magic, maxHealth, speed, strength;
+	private List<Attack> attacks = new ArrayList<>();
 
 	public Player(String name) {
 		this.name = name;
 		this.health = 0;
 	}
 
+	public Attack attack() {
+		int i = 1;
+
+		for (Attack attack : attacks) {
+			Console.outf("%s) %s%n", i, attack.getName());
+			i++;
+		}
+
+		int responseID = 0;
+		String response = Console.prompt("What attack would you like to use?%n> ");
+
+		if (Validate.isNumber(response))
+			responseID = Integer.parseInt(response);
+
+		return attacks.get(responseID);
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public int getAccuracy() {
+		return accuracy;
+	}
+
+	public int getEvasiveness() {
+		return evasiveness;
 	}
 
 	public int getHealth() {
@@ -35,6 +68,18 @@ public class Player implements BasicEntity {
 
 	public int getStrength() {
 		return strength;
+	}
+
+	public void hit(int damage) {
+		health -= damage;
+	}
+
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
+
+	public void setEvasiveness(int evasiveness) {
+		this.evasiveness = evasiveness;
 	}
 
 	public void setName(String name) {
@@ -59,9 +104,5 @@ public class Player implements BasicEntity {
 
 	public void setStrength(int strength) {
 		this.strength = strength;
-	}
-
-	public void promptAttack() {
-
 	}
 }

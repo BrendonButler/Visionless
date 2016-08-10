@@ -1,11 +1,19 @@
 package net.sparkzz.visionless.entity;
 
+import net.sparkzz.visionless.game.Attack;
+
 /**
  * @author Brendon Butler
  */
 public interface BasicEntity {
 
+	Attack attack();
+
 	String getName();
+
+	int getAccuracy();
+
+	int getEvasiveness();
 
 	int getHealth();
 
@@ -14,6 +22,12 @@ public interface BasicEntity {
 	int getSpeed();
 
 	int getStrength();
+
+	void hit(int damage);
+
+	void setAccuracy(int accuracy);
+
+	void setEvasiveness(int evasiveness);
 
 	void setName(String name);
 
