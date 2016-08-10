@@ -14,7 +14,7 @@ public class Zombie implements Enemy {
 
 	private List<Attack> attacks = new ArrayList<>();
 	private String name;
-	private int accuracy, evasiveness, health, maxHealth, speed, strength;
+	private double accuracy, evasiveness, health, maxHealth, speed, strength;
 
 	public Zombie() {
 		name = "Zombie";
@@ -32,39 +32,39 @@ public class Zombie implements Enemy {
 		return attacks.get(randAttack);
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public int getAccuracy() {
+	public double getAccuracy() {
 		return accuracy;
 	}
 
-	public int getEvasiveness() {
+	public double getEvasiveness() {
 		return evasiveness;
 	}
 
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 
-	public int getMaxHealth() {
+	public double getMaxHealth() {
 		return maxHealth;
 	}
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 
-	public int getStrength() {
+	public double getStrength() {
 		return strength;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void addAttack(Attack attack) {
 		attacks.add(attack);
 	}
 
-	public void hit(int damage) {
+	public void hit(double damage) {
 		health -= damage;
 	}
 
@@ -72,31 +72,31 @@ public class Zombie implements Enemy {
 		attacks.remove(attack);
 	}
 
-	public void setAccuracy(int accuracy) {
+	public void setAccuracy(double accuracy) {
 		this.accuracy = accuracy;
 	}
 
-	public void setEvasiveness(int evasiveness) {
+	public void setEvasiveness(double evasiveness) {
 		this.evasiveness = evasiveness;
+	}
+
+	public void setHealth(double health) {
+		this.health = health;
+	}
+
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth = maxHealth;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-	}
-
-	public void setSpeed(int speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
-	public void setStrength(int strength) {
+	public void setStrength(double strength) {
 		this.strength = strength;
 	}
 }

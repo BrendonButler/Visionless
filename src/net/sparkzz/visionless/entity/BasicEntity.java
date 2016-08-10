@@ -9,37 +9,37 @@ public interface BasicEntity {
 
 	Attack attack();
 
+	double getAccuracy();
+
+	double getEvasiveness();
+
+	double getHealth();
+
+	double getMaxHealth();
+
+	double getSpeed();
+
+	double getStrength();
+
 	String getName();
-
-	int getAccuracy();
-
-	int getEvasiveness();
-
-	int getHealth();
-
-	int getMaxHealth();
-
-	int getSpeed();
-
-	int getStrength();
 
 	void addAttack(Attack attack);
 
-	void hit(int damage);
+	void hit(double damage);
 
 	void removeAttack(Attack attack);
 
-	void setAccuracy(int accuracy);
+	void setAccuracy(double accuracy);
 
-	void setEvasiveness(int evasiveness);
+	void setEvasiveness(double evasiveness);
+
+	void setHealth(double health);
+
+	void setMaxHealth(double maxHealth);
 
 	void setName(String name);
 
-	void setHealth(int health);
+	void setSpeed(double speed);
 
-	void setMaxHealth(int maxHealth);
-
-	void setSpeed(int speed);
-
-	void setStrength(int strength);
+	void setStrength(double strength);
 }

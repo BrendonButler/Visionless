@@ -1,5 +1,6 @@
 package net.sparkzz.visionless.game;
 
+import net.sparkzz.modest.io.console.Alignment;
 import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
 
@@ -15,9 +16,11 @@ public class Battle {
 
 	public BasicEntity startBattle(BasicEntity attacker, BasicEntity target) {
 		boolean continueBattle = true;
+		String lastAttacks = "";
 
 		// TODO: clean this up
 		while (continueBattle) {
+			header(attacker, target, lastAttacks);
 			Attack[] attacks = new Attack[2];
 			BasicEntity[] fighters = new BasicEntity[2];
 			int first, second;
@@ -47,32 +50,61 @@ public class Battle {
 			}
 
 			if (isHit(fighters[first], fighters[second], attacks[first])) {
-				fighters[second].hit(calculateDamage(fighters[first], fighters[second], attacks[first]));
-				Console.outf("%s used %s!", fighters[first].getName(), attacks[first].getName());
+				int damage = calculateDamage(fighters[first], fighters[second], attacks[first]);
+				fighters[second].hit(damage);
+				lastAttacks = String.format("%n%s used %s and dealt %s damage!%n", fighters[first].getName(), attacks[first].getName(), damage);
 
-				if (fighters[second].getHealth() == 0) return fighters[first];
-			} else Console.outf("%s's attack missed!", fighters[first].getName());
+				if (fighters[second].getHealth() == 0) {
+					header(attacker, target, lastAttacks);
+					Console.outf("%s won!%n", fighters[first].getName());
+
+					return fighters[first];
+				}
+			} else lastAttacks = String.format("%n%s's attack missed!%n", fighters[first].getName());
 
 			if (isHit(fighters[second], fighters[first], attacks[second])) {
-				fighters[first].hit(calculateDamage(fighters[second], fighters[first], attacks[second]));
-				Console.outf("%s used %s!", fighters[second].getName(), attacks[second].getName());
+				int damage = calculateDamage(fighters[second], fighters[first], attacks[second]);
+				fighters[first].hit(damage);
+				lastAttacks += String.format("%s used %s and dealt %s damage!%n", fighters[second].getName(), attacks[second].getName(), damage);
 
-				if (fighters[first].getHealth() == 0) return fighters[second];
-			} else Console.outf("%s's attack missed!", fighters[second].getName());
+				if (fighters[first].getHealth() == 0) {
+					header(attacker, target, lastAttacks);
+					Console.outf("%s won!%n", fighters[second].getName());
+
+					return fighters[second];
+				}
+			} else lastAttacks += String.format("%s's attack missed!%n", fighters[second].getName());
 		}
 		return null;
 	}
 
 	private int calculateDamage(BasicEntity attacker, BasicEntity target, Attack attack) {
-		int damage = (attack.getDamage() / 100) * attacker.getStrength();
+		double damage = attacker.getStrength() * attack.getDamage() / 100;
 
 		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
-		return damage > target.getHealth() ? target.getHealth() : damage;
+		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
 	}
 
+	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
 	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
 		if (attack.getAccuracy() == 0) return true;
 
+		Console.outln("Accuracy: " + ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+
 		return (1 < ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+	}
+
+	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
+		Console.clear();
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, attacker.getName() + " vs " + target.getName());
+		Console.fillLine('-');
+		Console.outf("%s's Health: %s/%s%n", attacker.getName(), (int) attacker.getHealth(), (int) attacker.getMaxHealth());
+		Console.outf("%s's Health: %s/%s%n", target.getName(), (int) target.getHealth(), (int) target.getMaxHealth());
+
+		if (lastAttacks != "")
+			Console.out(lastAttacks);
+
+		Console.fillLine('=');
 	}
 }

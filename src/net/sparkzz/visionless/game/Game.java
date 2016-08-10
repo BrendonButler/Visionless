@@ -18,7 +18,6 @@ public class Game {
 
 	public static void newGame() {
 		Console.clear();
-		Console.outln("Starting a New Game..");
 
 		createAttacks();
 

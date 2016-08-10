@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * @author Brendon Butler
  */
-public class Player implements BasicEntity {
+public class Player implements MagicEntity {
 
 	private String name;
-	private int accuracy, evasiveness, health, magic, maxHealth, speed, strength;
+	private double accuracy, evasiveness, health, magic, maxHealth, speed, strength;
 	private List<Attack> attacks = new ArrayList<>();
 
 	public Player(String name) {
@@ -24,13 +24,15 @@ public class Player implements BasicEntity {
 	public Attack attack() {
 		int i = 1;
 
+		Console.outln("What attack would you like to use?");
+
 		for (Attack attack : attacks) {
 			Console.outf("%s) %s%n", i, attack.getName());
 			i++;
 		}
 
 		int responseID = 0;
-		String response = Console.prompt("What attack would you like to use?%n> ");
+		String response = Console.prompt("%n> ");
 
 		if (Validate.isNumber(response))
 			responseID = Integer.parseInt(response);
@@ -42,31 +44,31 @@ public class Player implements BasicEntity {
 		return name;
 	}
 
-	public int getAccuracy() {
+	public double getAccuracy() {
 		return accuracy;
 	}
 
-	public int getEvasiveness() {
+	public double getEvasiveness() {
 		return evasiveness;
 	}
 
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 
-	public int getMagic() {
+	public double getMagic() {
 		return magic;
 	}
 
-	public int getMaxHealth() {
+	public double getMaxHealth() {
 		return maxHealth;
 	}
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 
-	public int getStrength() {
+	public double getStrength() {
 		return strength;
 	}
 
@@ -74,7 +76,7 @@ public class Player implements BasicEntity {
 		attacks.add(attack);
 	}
 
-	public void hit(int damage) {
+	public void hit(double damage) {
 		health -= damage;
 	}
 
@@ -82,35 +84,35 @@ public class Player implements BasicEntity {
 		attacks.remove(attack);
 	}
 
-	public void setAccuracy(int accuracy) {
+	public void setAccuracy(double accuracy) {
 		this.accuracy = accuracy;
 	}
 
-	public void setEvasiveness(int evasiveness) {
+	public void setEvasiveness(double evasiveness) {
 		this.evasiveness = evasiveness;
+	}
+
+	public void setHealth(double health) {
+		this.health = health;
+	}
+
+	public void setMagic(double magic) {
+		this.magic = magic;
+	}
+
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth = maxHealth;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public void setMagic(int magic) {
-		this.magic = magic;
-	}
-
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-	}
-
-	public void setSpeed(int speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
-	public void setStrength(int strength) {
+	public void setStrength(double strength) {
 		this.strength = strength;
 	}
 }
