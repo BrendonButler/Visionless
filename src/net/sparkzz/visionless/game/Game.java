@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class Game {
 
+	public static boolean started = false;
 	public static Config config;
 	public static Player player;
 
@@ -54,12 +55,19 @@ public class Game {
 	}
 
 	public static void play(boolean newGame) {
+		started = true;
+
 		if (newGame) newGame();
 		else loadGame();
 	}
 
 	public static void save() {
-		config.set("Player.Attacks", player.getAttacks());
+		List<String> attackNames = new ArrayList<>();
+
+		for (Attack attack : player.getAttacks())
+			attackNames.add(attack.getName());
+
+		config.set("Player.Attacks", attackNames);
 		config.save();
 	}
 

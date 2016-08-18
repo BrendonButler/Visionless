@@ -12,6 +12,36 @@ public class Menu {
 
 	private static String lastMenu;
 
+	public static void attacksMenu() {
+		Player player = Game.getPlayer();
+
+		Console.clear();
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, String.format("Visionless - %s", player.getName()));
+		Console.fillLine('-');
+		for (Attack attack : player.getAttacks())
+			Console.outf("%s: %sPWR | %sACY%n", attack.getName(), attack.getDamage(), attack.getAccuracy());
+		Console.fillLine('=');
+		Console.outln("1) Back");
+
+		int responseID = 0;
+		String response = Console.prompt();
+
+		if (Validate.isNumber(response))
+			responseID = Integer.parseInt(response);
+		else attacksMenu();
+
+
+		switch (responseID) {
+			case 1:
+				statsMenu();
+				break;
+			default:
+				mainMenu();
+				break;
+		}
+	}
+
 	public static void gameMenu() {
 		lastMenu = "game";
 
@@ -101,7 +131,8 @@ public class Menu {
 				loadMenu();
 				break;
 			default:
-				Game.save();
+				if (Game.started)
+					Game.save();
 				Console.quit();
 				break;
 		}
@@ -119,18 +150,22 @@ public class Menu {
 		Console.outf("MGK: %s%n", (int) player.getMagic());
 		Console.outf("SPD: %s%n", (int) player.getSpeed());
 		Console.fillLine('=');
-		Console.outln("1) Back");
+		Console.outln("1) Attacks");
+		Console.outln("2) Back");
 
 		int responseID = 0;
 		String response = Console.prompt();
 
 		if (Validate.isNumber(response))
 			responseID = Integer.parseInt(response);
-		else gameMenu();
+		else statsMenu();
 
 
 		switch (responseID) {
 			case 1:
+				attacksMenu();
+				break;
+			case 2:
 				if (lastMenu.equalsIgnoreCase("game")) gameMenu();
 				if (lastMenu.equalsIgnoreCase("main")) mainMenu();
 				break;

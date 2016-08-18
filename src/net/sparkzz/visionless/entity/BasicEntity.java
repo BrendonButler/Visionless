@@ -62,13 +62,8 @@ public class BasicEntity {
 		return strength;
 	}
 
-	public List<String> getAttacks() {
-		List<String> attackNames = new ArrayList();
-
-		for (Attack attack : attacks)
-			attackNames.add(attack.getName());
-
-		return attackNames;
+	public List<Attack> getAttacks() {
+		return attacks;
 	}
 
 	public String getName() {

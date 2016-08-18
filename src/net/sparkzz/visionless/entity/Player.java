@@ -50,13 +50,8 @@ public class Player extends MagicEntity {
 	}
 
 	@Override
-	public List<String> getAttacks() {
-		List<String> attackNames = new ArrayList();
-
-		for (Attack attack : attacks)
-			attackNames.add(attack.getName());
-
-		return attackNames;
+	public List<Attack> getAttacks() {
+		return attacks;
 	}
 
 	@Override
