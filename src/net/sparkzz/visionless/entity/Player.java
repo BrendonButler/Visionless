@@ -32,11 +32,13 @@ public class Player implements MagicEntity {
 		}
 
 		int responseID = 0;
-		String response = Console.prompt("%n> ");
+		do {
+			String response = Console.prompt("%n> ");
 
-		if (Validate.isNumber(response))
-			responseID = Integer.parseInt(response);
+			if (Validate.isNumber(response))
+				responseID = Integer.parseInt(response);
 
+		} while (responseID == 0 || responseID > attacks.size());
 		return attacks.get(responseID - 1);
 	}
 

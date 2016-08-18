@@ -12,6 +12,10 @@ public class Game {
 
 	public static Player player;
 
+	public static Player getPlayer() {
+		return player;
+	}
+
 	public static void loadGame() {
 		Console.outln("Loading Game..");
 	}
@@ -45,6 +49,10 @@ public class Game {
 		Battle battle = new Battle();
 
 		battle.startBattle(player, zombie);
+
+		player.setHealth(player.getMaxHealth());
+
+		Menu.gameMenu();
 	}
 
 	public static void play(boolean newGame) {
