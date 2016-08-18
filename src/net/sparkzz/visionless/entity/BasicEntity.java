@@ -1,49 +1,117 @@
 package net.sparkzz.visionless.entity;
 
 import net.sparkzz.visionless.game.Attack;
+import net.sparkzz.visionless.game.Attacks;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Brendon Butler
  */
-public interface BasicEntity {
+public class BasicEntity {
 
-	Attack attack();
+	private List<Attack> attacks = new ArrayList<>();
+	private String name;
+	protected double accuracy, evasiveness, health, maxHealth, speed, strength;
 
-	double getAccuracy();
+	public BasicEntity(String name, int HP, int maxHP, int strength, int speed, int accuracy, int evasiveness, List<String> attacks) {
+		this.name = name;
+		setHealth(HP);
+		setMaxHealth(maxHP);
+		setStrength(strength);
+		setSpeed(speed);
+		setAccuracy(accuracy);
+		setEvasiveness(evasiveness);
 
-	double getEvasiveness();
+		if (attacks != null)
+			for (String attack : attacks)
+				addAttack(Attacks.get(attack));
+	}
 
-	double getHealth();
+	public Attack attack() {
+		Random random = new Random();
 
-	double getMaxHealth();
+		int randAttack = random.nextInt(attacks.size());
 
-	double getSpeed();
+		return attacks.get(randAttack);
+	}
 
-	double getStrength();
+	public double getAccuracy() {
+		return accuracy;
+	}
 
-	List getAttacks();
+	public double getEvasiveness() {
+		return evasiveness;
+	}
 
-	String getName();
+	public double getHealth() {
+		return health;
+	}
 
-	void addAttack(Attack attack);
+	public double getMaxHealth() {
+		return maxHealth;
+	}
 
-	void hit(double damage);
+	public double getSpeed() {
+		return speed;
+	}
 
-	void removeAttack(Attack attack);
+	public double getStrength() {
+		return strength;
+	}
 
-	void setAccuracy(double accuracy);
+	public List<String> getAttacks() {
+		List<String> attackNames = new ArrayList();
 
-	void setEvasiveness(double evasiveness);
+		for (Attack attack : attacks)
+			attackNames.add(attack.getName());
 
-	void setHealth(double health);
+		return attackNames;
+	}
 
-	void setMaxHealth(double maxHealth);
+	public String getName() {
+		return name;
+	}
 
-	void setName(String name);
+	public void addAttack(Attack attack) {
+		attacks.add(attack);
+	}
 
-	void setSpeed(double speed);
+	public void hit(double damage) {
+		health -= damage;
+	}
 
-	void setStrength(double strength);
+	public void removeAttack(Attack attack) {
+		attacks.remove(attack);
+	}
+
+	public void setAccuracy(double accuracy) {
+		this.accuracy = accuracy;
+	}
+
+	public void setEvasiveness(double evasiveness) {
+		this.evasiveness = evasiveness;
+	}
+
+	public void setHealth(double health) {
+		this.health = health;
+	}
+
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public void setStrength(double strength) {
+		this.strength = strength;
+	}
 }

@@ -1,11 +1,24 @@
 package net.sparkzz.visionless.entity;
 
+import java.util.List;
+
 /**
  * @author Brendon Butler
  */
-public interface MagicEntity extends BasicEntity {
+public class MagicEntity extends BasicEntity {
 
-	double getMagic();
+	private double magic;
 
-	void setMagic(double magic);
+	public MagicEntity(String name, int HP, int maxHP, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
+		super(name, HP, maxHP, strength, speed, accuracy, evasiveness, attacks);
+		setMagic(magic);
+	}
+
+	public double getMagic() {
+		return magic;
+	}
+
+	public void setMagic(double magic) {
+		this.magic = magic;
+	}
 }

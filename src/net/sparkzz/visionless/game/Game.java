@@ -3,11 +3,11 @@ package net.sparkzz.visionless.game;
 import net.sparkzz.modest.io.config.Config;
 import net.sparkzz.modest.io.config.JSONConfig;
 import net.sparkzz.modest.io.console.Console;
-import net.sparkzz.visionless.entity.Enemy;
+import net.sparkzz.visionless.entity.BasicEntity;
 import net.sparkzz.visionless.entity.Player;
-import net.sparkzz.visionless.entity.enemies.Zombie;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,19 +25,6 @@ public class Game {
 	public static void loadGame() {
 		setup();
 
-		String name = player.getName();
-
-		player.setHealth(config.getInteger(name + ".Health"));
-		player.setMaxHealth(config.getInteger(name + ".Max_Health"));
-		player.setStrength(config.getInteger(name + ".Strength"));
-		player.setMagic(config.getInteger(name + ".Magic"));
-		player.setSpeed(config.getInteger(name + ".Speed"));
-		player.setAccuracy(config.getInteger(name + ".Accuracy"));
-		player.setEvasiveness(config.getInteger(name + ".Evasiveness"));
-
-		for (String attack : (List<String>) config.getList(name + ".Attacks"))
-			player.addAttack(Attacks.get(attack));
-
 		Menu.gameMenu();
 	}
 
@@ -53,15 +40,9 @@ public class Game {
 		player.setEvasiveness(20);
 		player.addAttack(Attacks.get("punch"));
 
-		Enemy zombie = new Zombie();
-
-		zombie.setHealth(15);
-		zombie.setMaxHealth(15);
-		zombie.setStrength(6);
-		zombie.setSpeed(4);
-		zombie.setAccuracy(60);
-		zombie.setEvasiveness(5);
-		zombie.addAttack(Attacks.get("punch"));
+		BasicEntity zombie = new BasicEntity("Zombie", 15, 15, 6, 4, 60, 5, new ArrayList<String>() {{
+			add("punch");
+		}});
 
 		Battle battle = new Battle();
 
@@ -78,7 +59,7 @@ public class Game {
 	}
 
 	public static void save() {
-		config.set(String.format("%s.Attacks", player.getName()), player.getAttacks());
+		config.set("Player.Attacks", player.getAttacks());
 		config.save();
 	}
 
@@ -86,13 +67,32 @@ public class Game {
 		Attacks.add(new Attack("punch", 60, 95));
 	}
 
+	private static void createEnemies() {
+
+	}
+
 	private static void setup() {
 		Console.clear();
 
 		String username = Console.prompt("What is your name?%n> ");
 		config = new JSONConfig(new File(System.getProperty("user.dir") + "/saves"), username.trim());
-		player = new Player(username);
 
 		createAttacks();
+
+		if (!config.isEmpty())
+			player = new Player(username,
+					config.getInteger("Player.Health"),
+					config.getInteger("Player.Max_Health"),
+					config.getInteger("Player.Strength"),
+					config.getInteger("Player.Magic"),
+					config.getInteger("Player.Speed"),
+					config.getInteger("Player.Accuracy"),
+					config.getInteger("Player.Evasiveness"),
+					new ArrayList<String>() {{
+						for (String attack : (List<String>) config.getList("Player.Attacks")) {
+							add(attack);
+						}
+					}});
+		else player = new Player(username);
 	}
 }
