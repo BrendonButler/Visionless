@@ -12,36 +12,6 @@ public class Menu {
 
 	private static String lastMenu;
 
-	public static void mainMenu() {
-		lastMenu = "main";
-
-		Console.clear();
-		Console.setMaxChars(48);
-		Console.fillLine('=');
-		Console.align(Alignment.CENTER, "Visionless");
-		Console.fillLine('-');
-		Console.outln("What would you like to do?");
-		Console.fillLine('=');
-		Console.outln("1) Play");
-		Console.outln("2) Quit");
-
-		int responseID = 0;
-		String response = Console.prompt();
-
-		if (Validate.isNumber(response))
-			responseID = Integer.parseInt(response);
-		else mainMenu();
-
-		switch (responseID) {
-			case 1:
-				Game.play(true);
-				break;
-			default:
-				Console.quit();
-				break;
-		}
-	}
-
 	public static void gameMenu() {
 		lastMenu = "game";
 
@@ -71,6 +41,68 @@ public class Menu {
 				break;
 			default:
 				mainMenu();
+				break;
+		}
+	}
+
+	public static void loadMenu() {
+		Console.clear();
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, "Visionless");
+		Console.fillLine('-');
+		Console.outln("What would you like to do?");
+		Console.fillLine('=');
+		Console.outln("1) New Game");
+		Console.outln("2) Load Game");
+		Console.outln("3) Main Menu");
+
+		int responseID = 0;
+		String response = Console.prompt();
+
+		if (Validate.isNumber(response))
+			responseID = Integer.parseInt(response);
+		else loadMenu();
+
+		switch (responseID) {
+			case 1:
+				Game.play(true);
+				break;
+			case 2:
+				Game.play(false);
+				break;
+			default:
+				mainMenu();
+				break;
+		}
+	}
+
+	public static void mainMenu() {
+		lastMenu = "main";
+
+		Console.clear();
+		Console.setMaxChars(48);
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, "Visionless");
+		Console.fillLine('-');
+		Console.outln("What would you like to do?");
+		Console.fillLine('=');
+		Console.outln("1) Play");
+		Console.outln("2) Quit");
+
+		int responseID = 0;
+		String response = Console.prompt();
+
+		if (Validate.isNumber(response))
+			responseID = Integer.parseInt(response);
+		else mainMenu();
+
+		switch (responseID) {
+			case 1:
+				loadMenu();
+				break;
+			default:
+				Game.save();
+				Console.quit();
 				break;
 		}
 	}

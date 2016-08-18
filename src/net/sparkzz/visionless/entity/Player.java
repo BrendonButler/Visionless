@@ -7,6 +7,8 @@ import net.sparkzz.visionless.game.Attack;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.sparkzz.visionless.game.Game.config;
+
 /**
  * @author Brendon Butler
  */
@@ -18,7 +20,6 @@ public class Player implements MagicEntity {
 
 	public Player(String name) {
 		this.name = name;
-		this.health = 0;
 	}
 
 	public Attack attack() {
@@ -40,10 +41,6 @@ public class Player implements MagicEntity {
 
 		} while (responseID == 0 || responseID > attacks.size());
 		return attacks.get(responseID - 1);
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public double getAccuracy() {
@@ -74,35 +71,54 @@ public class Player implements MagicEntity {
 		return strength;
 	}
 
+	public List getAttacks() {
+		List<String> attackNames = new ArrayList();
+
+		for (Attack attack : attacks)
+			attackNames.add(attack.getName());
+
+		return attackNames;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	public void addAttack(Attack attack) {
 		attacks.add(attack);
 	}
 
 	public void hit(double damage) {
-		health -= damage;
+		setHealth(health - damage);
 	}
 
 	public void removeAttack(Attack attack) {
+		// TODO: config.remove(String.format("%s.Attack", name), attack.getName());
 		attacks.remove(attack);
 	}
 
 	public void setAccuracy(double accuracy) {
+		config.set(String.format("%s.Accuracy", name), accuracy);
 		this.accuracy = accuracy;
 	}
 
 	public void setEvasiveness(double evasiveness) {
+		config.set(String.format("%s.Evasiveness", name), evasiveness);
 		this.evasiveness = evasiveness;
 	}
 
 	public void setHealth(double health) {
+		config.set(String.format("%s.Health", name), health);
 		this.health = health;
 	}
 
 	public void setMagic(double magic) {
+		config.set(String.format("%s.Magic", name), magic);
 		this.magic = magic;
 	}
 
 	public void setMaxHealth(double maxHealth) {
+		config.set(String.format("%s.Max_Health", name), maxHealth);
 		this.maxHealth = maxHealth;
 	}
 
@@ -111,10 +127,12 @@ public class Player implements MagicEntity {
 	}
 
 	public void setSpeed(double speed) {
+		config.set(String.format("%s.Speed", name), speed);
 		this.speed = speed;
 	}
 
 	public void setStrength(double strength) {
+		config.set(String.format("%s.Strength", name), strength);
 		this.strength = strength;
 	}
 }

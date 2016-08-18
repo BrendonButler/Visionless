@@ -56,6 +56,15 @@ public class Zombie implements Enemy {
 		return strength;
 	}
 
+	public List getAttacks() {
+		List<String> attackNames = new ArrayList();
+
+		for (Attack attack : attacks)
+			attackNames.add(attack.getName());
+
+		return attackNames;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -2,6 +2,8 @@ package net.sparkzz.visionless.entity;
 
 import net.sparkzz.visionless.game.Attack;
 
+import java.util.List;
+
 /**
  * @author Brendon Butler
  */
@@ -20,6 +22,8 @@ public interface BasicEntity {
 	double getSpeed();
 
 	double getStrength();
+
+	List getAttacks();
 
 	String getName();
 
