@@ -10,7 +10,11 @@ import net.sparkzz.visionless.entity.Player;
  */
 public class Menu {
 
-	private static String lastMenu;
+	private static Menus lastMenu;
+
+	public enum Menus {
+		GAME, MAIN
+	}
 
 	public static void attacksMenu() {
 		Player player = Game.getPlayer();
@@ -43,7 +47,7 @@ public class Menu {
 	}
 
 	public static void gameMenu() {
-		lastMenu = "game";
+		lastMenu = Menus.GAME;
 
 		Player player = Game.getPlayer();
 		Console.clear();
@@ -107,7 +111,7 @@ public class Menu {
 	}
 
 	public static void mainMenu() {
-		lastMenu = "main";
+		lastMenu = Menus.MAIN;
 
 		Console.clear();
 		Console.setMaxChars(48);
@@ -166,8 +170,8 @@ public class Menu {
 				attacksMenu();
 				break;
 			case 2:
-				if (lastMenu.equalsIgnoreCase("game")) gameMenu();
-				if (lastMenu.equalsIgnoreCase("main")) mainMenu();
+				if (lastMenu == Menus.GAME) gameMenu();
+				if (lastMenu == Menus.MAIN) mainMenu();
 				break;
 			default:
 				mainMenu();
