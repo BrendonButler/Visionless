@@ -4,6 +4,7 @@ import net.sparkzz.modest.io.config.Config;
 import net.sparkzz.modest.io.config.JSONConfig;
 import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
+import net.sparkzz.visionless.entity.Enemies;
 import net.sparkzz.visionless.entity.Player;
 
 import java.io.File;
@@ -41,13 +42,9 @@ public class Game {
 		player.setEvasiveness(20);
 		player.addAttack(Attacks.get("punch"));
 
-		BasicEntity zombie = new BasicEntity("Zombie", 15, 15, 6, 4, 60, 5, new ArrayList<String>() {{
-			add("punch");
-		}});
-
 		Battle battle = new Battle();
 
-		battle.startBattle(player, zombie);
+		battle.startBattle(player, Enemies.getEnemy(Enemies.Enemy.ZOMBIE));
 
 		player.setHealth(player.getMaxHealth());
 
@@ -76,7 +73,13 @@ public class Game {
 	}
 
 	private static void createEnemies() {
+		// Construct enemies
+		BasicEntity zombie = new BasicEntity("zombie", 15, 15, 6, 4, 60, 5, new ArrayList<String>() {{
+			add("punch");
+		}});
 
+		// Store enemies
+		Enemies.addEnemy(zombie);
 	}
 
 	private static void setup() {
@@ -86,6 +89,7 @@ public class Game {
 		config = new JSONConfig(new File(System.getProperty("user.dir") + "/saves"), username.trim());
 
 		createAttacks();
+		createEnemies();
 
 		if (!config.isEmpty())
 			player = new Player(username,
@@ -97,9 +101,8 @@ public class Game {
 					config.getInteger("Player.Accuracy"),
 					config.getInteger("Player.Evasiveness"),
 					new ArrayList<String>() {{
-						for (String attack : (List<String>) config.getList("Player.Attacks")) {
+						for (String attack : (List<String>) config.getList("Player.Attacks"))
 							add(attack);
-						}
 					}});
 		else player = new Player(username);
 	}

@@ -66,6 +66,15 @@ public class BasicEntity {
 		return attacks;
 	}
 
+	public List<String> getAttackNames() {
+		List<String> attackNames = new ArrayList<>();
+
+		for (Attack attack : attacks)
+			attackNames.add(attack.toString());
+
+		return attackNames;
+	}
+
 	public String getName() {
 		return name;
 	}
