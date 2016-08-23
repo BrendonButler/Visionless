@@ -8,6 +8,10 @@ import java.util.Map;
  */
 public class Attacks {
 
+	public enum AttackType {
+		PHYSICAL, MAGIC
+	}
+
 	private static Map<String, Attack> attacks = new HashMap<>();
 
 	public static Attack get(String name) {

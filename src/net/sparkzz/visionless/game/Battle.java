@@ -3,6 +3,7 @@ package net.sparkzz.visionless.game;
 import net.sparkzz.modest.io.console.Alignment;
 import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
+import net.sparkzz.visionless.entity.MagicEntity;
 
 import java.util.Random;
 
@@ -14,7 +15,38 @@ public class Battle {
 	private boolean isAttackerDead = false;
 	private boolean isTargetDead = false;
 
-	public BasicEntity startBattle(BasicEntity attacker, BasicEntity target) {
+
+	private int calculateDamage(BasicEntity attacker, BasicEntity target, Attack attack) {
+		double damage = attack.getType() == Attacks.AttackType.MAGIC ? ((MagicEntity) attacker).getMagic() * attack.getDamage() / 100 : attacker.getStrength() * attack.getDamage() / 100;
+
+		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
+		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
+	}
+
+	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
+	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
+		if (attack.getAccuracy() == 0) return true;
+
+		Console.outln("Accuracy: " + ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+
+		return (1 < ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+	}
+
+	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
+		Console.clear();
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, attacker.getName() + " vs " + target.getName());
+		Console.fillLine('-');
+		Console.outf("%s's Health: %s/%s%n", attacker.getName(), (int) attacker.getHealth(), (int) attacker.getMaxHealth());
+		Console.outf("%s's Health: %s/%s%n", target.getName(), (int) target.getHealth(), (int) target.getMaxHealth());
+
+		if (lastAttacks != "")
+			Console.out(lastAttacks);
+
+		Console.fillLine('=');
+	}
+
+	public void startBattle(BasicEntity attacker, BasicEntity target) {
 		boolean continueBattle = true;
 		String lastAttacks = "";
 
@@ -58,7 +90,8 @@ public class Battle {
 					header(attacker, target, lastAttacks);
 					Console.outf("%s won!%n", fighters[first].getName());
 
-					return fighters[first];
+					Console.prompt("Type any key to continue:%n> ");
+					return;
 				}
 			} else lastAttacks = String.format("%n%s's attack missed!%n", fighters[first].getName());
 
@@ -71,40 +104,10 @@ public class Battle {
 					header(attacker, target, lastAttacks);
 					Console.outf("%s won!%n", fighters[second].getName());
 
-					return fighters[second];
+					Console.prompt("%nType any key to continue:%n> ");
+					return;
 				}
 			} else lastAttacks += String.format("%s's attack missed!%n", fighters[second].getName());
 		}
-		return null;
-	}
-
-	private int calculateDamage(BasicEntity attacker, BasicEntity target, Attack attack) {
-		double damage = attacker.getStrength() * attack.getDamage() / 100;
-
-		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
-		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
-	}
-
-	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
-	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
-		if (attack.getAccuracy() == 0) return true;
-
-		Console.outln("Accuracy: " + ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
-
-		return (1 < ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
-	}
-
-	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
-		Console.clear();
-		Console.fillLine('=');
-		Console.align(Alignment.CENTER, attacker.getName() + " vs " + target.getName());
-		Console.fillLine('-');
-		Console.outf("%s's Health: %s/%s%n", attacker.getName(), (int) attacker.getHealth(), (int) attacker.getMaxHealth());
-		Console.outf("%s's Health: %s/%s%n", target.getName(), (int) target.getHealth(), (int) target.getMaxHealth());
-
-		if (lastAttacks != "")
-			Console.out(lastAttacks);
-
-		Console.fillLine('=');
 	}
 }
