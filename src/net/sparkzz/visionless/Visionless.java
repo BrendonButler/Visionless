@@ -14,7 +14,7 @@ public class Visionless extends ModestGame {
 
 	public static void main(String[] args) {
 		new Visionless();
-    }
+	}
 
 	@Override
 	public void postInit() {
