@@ -68,9 +68,15 @@ public class Menu {
 
 		switch (responseID) {
 			case 1:
-				Battle battle = new Battle();
+				if (player.getHealth() == 0) {
+					Console.outln("You must heal up first before battling again!");
+					player.setHealth(player.getMaxHealth());
+					gameMenu();
+				} else {
+					Battle battle = new Battle();
 
-				battle.randomBattle(player);
+					battle.randomBattle(player);
+				}
 				break;
 			case 2:
 				statsMenu();

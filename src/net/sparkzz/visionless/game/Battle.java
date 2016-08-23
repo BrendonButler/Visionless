@@ -5,6 +5,7 @@ import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
 import net.sparkzz.visionless.entity.Enemies;
 import net.sparkzz.visionless.entity.MagicEntity;
+import net.sparkzz.visionless.entity.Player;
 
 import java.util.List;
 import java.util.Random;
@@ -98,7 +99,12 @@ public class Battle {
 					header(attacker, target, lastAttacks);
 					Console.outf("%s won!%n", fighters[first].getName());
 
-					Console.prompt("Type any key to continue:%n> ");
+					if (!(fighters[first] instanceof Player))
+						fighters[first].setHealth(fighters[first].getMaxHealth());
+					if (!(fighters[second] instanceof Player))
+						fighters[second].setHealth(fighters[second].getMaxHealth());
+
+					Console.prompt("%nType any key to continue:%n> ");
 					Menu.gameMenu();
 					return;
 				}
@@ -112,6 +118,11 @@ public class Battle {
 				if (fighters[first].getHealth() == 0) {
 					header(attacker, target, lastAttacks);
 					Console.outf("%s won!%n", fighters[second].getName());
+
+					if (!(fighters[first] instanceof Player))
+						fighters[first].setHealth(fighters[first].getMaxHealth());
+					if (!(fighters[second] instanceof Player))
+						fighters[second].setHealth(fighters[second].getMaxHealth());
 
 					Console.prompt("%nType any key to continue:%n> ");
 					Menu.gameMenu();
