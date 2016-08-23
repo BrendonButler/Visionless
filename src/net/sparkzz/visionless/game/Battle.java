@@ -3,8 +3,10 @@ package net.sparkzz.visionless.game;
 import net.sparkzz.modest.io.console.Alignment;
 import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
+import net.sparkzz.visionless.entity.Enemies;
 import net.sparkzz.visionless.entity.MagicEntity;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,14 +17,6 @@ public class Battle {
 	private boolean isAttackerDead = false;
 	private boolean isTargetDead = false;
 
-
-	private int calculateDamage(BasicEntity attacker, BasicEntity target, Attack attack) {
-		double damage = attack.getType() == Attacks.AttackType.MAGIC ? ((MagicEntity) attacker).getMagic() * attack.getDamage() / 100 : attacker.getStrength() * attack.getDamage() / 100;
-
-		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
-		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
-	}
-
 	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
 	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
 		if (attack.getAccuracy() == 0) return true;
@@ -30,6 +24,13 @@ public class Battle {
 		Console.outln("Accuracy: " + ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
 
 		return (1 < ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+	}
+
+	private int calculateDamage(BasicEntity attacker, BasicEntity target, Attack attack) {
+		double damage = attack.getType() == Attacks.AttackType.MAGIC ? ((MagicEntity) attacker).getMagic() * attack.getDamage() / 100 : attacker.getStrength() * attack.getDamage() / 100;
+
+		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
+		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
 	}
 
 	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
@@ -44,6 +45,13 @@ public class Battle {
 			Console.out(lastAttacks);
 
 		Console.fillLine('=');
+	}
+
+	public void randomBattle(BasicEntity attacker) {
+		Random rand = new Random();
+		List<BasicEntity> enemies = Enemies.getAllEnemies();
+
+		startBattle(attacker, enemies.get(rand.nextInt(enemies.size())));
 	}
 
 	public void startBattle(BasicEntity attacker, BasicEntity target) {
@@ -91,6 +99,7 @@ public class Battle {
 					Console.outf("%s won!%n", fighters[first].getName());
 
 					Console.prompt("Type any key to continue:%n> ");
+					Menu.gameMenu();
 					return;
 				}
 			} else lastAttacks = String.format("%n%s's attack missed!%n", fighters[first].getName());
@@ -105,6 +114,7 @@ public class Battle {
 					Console.outf("%s won!%n", fighters[second].getName());
 
 					Console.prompt("%nType any key to continue:%n> ");
+					Menu.gameMenu();
 					return;
 				}
 			} else lastAttacks += String.format("%s's attack missed!%n", fighters[second].getName());

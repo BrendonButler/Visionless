@@ -68,7 +68,9 @@ public class Menu {
 
 		switch (responseID) {
 			case 1:
-				// Start battle
+				Battle battle = new Battle();
+
+				battle.randomBattle(player);
 				break;
 			case 2:
 				statsMenu();

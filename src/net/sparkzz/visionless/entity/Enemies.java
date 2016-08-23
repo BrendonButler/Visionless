@@ -1,6 +1,8 @@
 package net.sparkzz.visionless.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +36,10 @@ public class Enemies {
 
 	public static BasicEntity getEnemy(String enemy) {
 		return enemies.get(enemy);
+	}
+
+	public static List<BasicEntity> getAllEnemies() {
+		return new ArrayList<>(enemies.values());
 	}
 
 	public static void addEnemy(MagicEntity entity) {

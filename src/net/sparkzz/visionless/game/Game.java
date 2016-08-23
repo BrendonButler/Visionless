@@ -107,7 +107,7 @@ public class Game {
 		// entities
 		names.put("bat", "Bat");
 		names.put("magic_bat", "Magic Bat");
-		names.put("zombie", "zombie");
+		names.put("zombie", "Zombie");
 
 		// attacks
 		names.put("bite", "Bite");
