@@ -48,7 +48,7 @@ public class Game {
 
 		Battle battle = new Battle();
 
-		battle.startBattle(player, Enemies.getEnemy(Enemies.Enemy.MAGIC_BAT));
+		battle.startBattle(player, Enemies.getEnemy(Enemies.Enemy.ZOMBIE));
 
 		player.setHealth(player.getMaxHealth());
 
@@ -80,21 +80,32 @@ public class Game {
 
 	private static void createEnemies() {
 		// Construct enemies
-		BasicEntity bat = new BasicEntity("bat", 12, 12, 4, 10, 90, 30, new ArrayList<String>() {{
+		BasicEntity bat = new BasicEntity("bat", 12, 4, 10, 90, 30, new ArrayList<String>() {{
 			add("bite");
 		}});
 
-		BasicEntity zombie = new BasicEntity("zombie", 15, 15, 6, 4, 60, 5, new ArrayList<String>() {{
+		BasicEntity skeleton = new BasicEntity("skeleton", 14, 5, 5, 70, 30, new ArrayList<String>() {{
 			add("punch");
 		}});
 
-		MagicEntity magicBat = new MagicEntity("magic_bat", 10, 10, 3, 12, 10, 60, 60, new ArrayList<String>() {{
+		BasicEntity zombie = new BasicEntity("zombie", 15, 6, 4, 60, 5, new ArrayList<String>() {{
+			add("punch");
+		}});
+
+		MagicEntity magicBat = new MagicEntity("magic_bat", 10, 3, 12, 10, 60, 60, new ArrayList<String>() {{
+			add("sludge");
+		}});
+
+		MagicEntity wizard = new MagicEntity("wizard", 14, 4, 20, 6, 65, 70, new ArrayList<String>() {{
+			add("punch");
 			add("sludge");
 		}});
 
 		// Store enemies
 		Enemies.addEnemy(bat);
 		Enemies.addEnemy(magicBat);
+		Enemies.addEnemy(skeleton);
+		Enemies.addEnemy(wizard);
 		Enemies.addEnemy(zombie);
 	}
 
@@ -107,6 +118,8 @@ public class Game {
 		// entities
 		names.put("bat", "Bat");
 		names.put("magic_bat", "Magic Bat");
+		names.put("skeleton", "Skeleton");
+		names.put("wizard", "Wizard");
 		names.put("zombie", "Zombie");
 
 		// attacks

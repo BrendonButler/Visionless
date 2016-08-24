@@ -18,11 +18,12 @@ public class Player extends MagicEntity {
 	private List<Attack> attacks = new ArrayList<>();
 
 	public Player(String name) {
-		super(name, 0, 0, 0, 0, 0, 0, 0, null);
+		super(name, 0, 0, 0, 0, 0, 0, null);
 	}
 
 	public Player(String name, int health, int maxHealth, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
-		super(name, health, maxHealth, strength, magic, speed, accuracy, evasiveness, null);
+		super(name, health, strength, magic, speed, accuracy, evasiveness, null);
+		setMaxHealth(maxHealth);
 		for (String attack : attacks)
 			addAttack(Attacks.get(attack));
 	}

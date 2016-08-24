@@ -9,8 +9,8 @@ public class MagicEntity extends BasicEntity {
 
 	private double magic;
 
-	public MagicEntity(String name, int HP, int maxHP, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
-		super(name, HP, maxHP, strength, speed, accuracy, evasiveness, attacks);
+	public MagicEntity(String name, int HP, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
+		super(name, HP, strength, speed, accuracy, evasiveness, attacks);
 		setMagic(magic);
 	}
 

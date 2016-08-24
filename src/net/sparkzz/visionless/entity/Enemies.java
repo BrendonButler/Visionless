@@ -13,7 +13,8 @@ public class Enemies {
 	private static Map<String, BasicEntity> enemies = new HashMap();
 
 	public enum Enemy {
-		ZOMBIE("zombie"), BAT("bat"), MAGIC_BAT("magic_bat");
+		BAT("bat"), MAGIC_BAT("magic_bat"), SKELETON("skeleton"),
+		WIZARD("wizard"), ZOMBIE("zombie");
 
 		private final String name;
 

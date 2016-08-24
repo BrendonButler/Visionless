@@ -16,10 +16,10 @@ public class BasicEntity {
 	private String name;
 	protected double accuracy, evasiveness, health, maxHealth, speed, strength;
 
-	public BasicEntity(String name, int HP, int maxHP, int strength, int speed, int accuracy, int evasiveness, List<String> attacks) {
+	public BasicEntity(String name, int HP, int strength, int speed, int accuracy, int evasiveness, List<String> attacks) {
 		this.name = name;
 		setHealth(HP);
-		setMaxHealth(maxHP);
+		setMaxHealth(HP);
 		setStrength(strength);
 		setSpeed(speed);
 		setAccuracy(accuracy);
