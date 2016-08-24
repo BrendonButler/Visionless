@@ -15,9 +15,6 @@ import java.util.Random;
  */
 public class Battle {
 
-	private boolean isAttackerDead = false;
-	private boolean isTargetDead = false;
-
 	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
 	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
 		if (attack.getAccuracy() == 0) return true;
@@ -42,7 +39,7 @@ public class Battle {
 		Console.outf("%s's Health: %s/%s%n", attacker.getName(), (int) attacker.getHealth(), (int) attacker.getMaxHealth());
 		Console.outf("%s's Health: %s/%s%n", target.getName(), (int) target.getHealth(), (int) target.getMaxHealth());
 
-		if (lastAttacks != "")
+		if (!lastAttacks.equals(""))
 			Console.out(lastAttacks);
 
 		Console.fillLine('=');
