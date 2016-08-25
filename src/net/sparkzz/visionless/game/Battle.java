@@ -72,7 +72,7 @@ public class Battle {
 			if (attacker.getSpeed() > target.getSpeed()) {
 				first = 0;
 				second = 1;
-			} else if (attacker.getSpeed() < attacker.getSpeed()) {
+			} else if (attacker.getSpeed() < target.getSpeed()) {
 				first = 1;
 				second = 0;
 			} else {

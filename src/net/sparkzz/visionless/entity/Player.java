@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.sparkzz.visionless.game.Game.config;
+import static net.sparkzz.visionless.utils.MathHelper.*;
 
 /**
  * @author Brendon Butler
@@ -17,13 +18,11 @@ public class Player extends MagicEntity {
 
 	private List<Attack> attacks = new ArrayList<>();
 
-	public Player(String name) {
-		super(name, 0, 0, 0, 0, 0, 0, null);
-	}
+	public Player(String name, int xp, int health, int maxHealth, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
+		super(name, findLevel(xp), maxHealth, strength, magic, speed, accuracy, evasiveness, null);
 
-	public Player(String name, int health, int maxHealth, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
-		super(name, health, strength, magic, speed, accuracy, evasiveness, null);
-		setMaxHealth(maxHealth);
+		setHealth(health);
+
 		for (String attack : attacks)
 			addAttack(Attacks.get(attack));
 	}
@@ -50,6 +49,10 @@ public class Player extends MagicEntity {
 		return attacks.get(responseID - 1);
 	}
 
+	public int getXPNeeded() {
+		return (int) Math.floor(findXP(getLevel() + 1) - getXP());
+	}
+
 	@Override
 	public List<Attack> getAttacks() {
 		return attacks;
@@ -59,6 +62,10 @@ public class Player extends MagicEntity {
 	public void addAttack(Attack attack) {
 		// TODO: config.add("Player.Attacks", attack.getName());
 		attacks.add(attack);
+	}
+
+	public void addXP(int xp) {
+		setXP(getXP() + xp);
 	}
 
 	@Override
@@ -107,5 +114,11 @@ public class Player extends MagicEntity {
 	public void setStrength(double strength) {
 		config.set("Player.Strength", (int) strength);
 		super.setStrength(strength);
+	}
+
+	@Override
+	public void setXP(int xp) {
+		config.set("Player.Stats.XP", xp);
+		super.setXP(xp);
 	}
 }
