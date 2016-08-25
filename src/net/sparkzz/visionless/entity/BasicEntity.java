@@ -151,9 +151,11 @@ public class BasicEntity {
 	}
 
 	public void setXP(int xp) {
-		this.xp = xp;
-
-		if (getLevel() > findLevel(xp))
+		if (getLevel() > findLevel(xp)) {
+			this.xp = xp;
 			determineStats();
+			return;
+		}
+		this.xp = xp;
 	}
 }
