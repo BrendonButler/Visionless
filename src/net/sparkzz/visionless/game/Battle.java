@@ -108,14 +108,14 @@ public class Battle {
 		while (continueBattle) {
 			if (lastAttacks.equals("")) header(attacker, target, lastAttacks);
 			else header(attacker, target, "%n" + lastAttacks);
-			
+
 			if (calculateFasterEntity(attacker, target) == 0)
 				lastAttacks = attack(attacker, target);
 			else if (calculateFasterEntity(attacker, target) == 1)
 				lastAttacks = attack(target, attacker);
 			else {
 				Random nextAttacker = new Random();
-				
+
 				if (nextAttacker.nextInt(1) == 0)
 					lastAttacks = attack(attacker, target);
 				else lastAttacks = attack(target, attacker);

@@ -7,23 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static net.sparkzz.visionless.utils.MathHelper.*;
+
 /**
  * @author Brendon Butler
  */
 public class BasicEntity {
 
-	private List<Attack> attacks = new ArrayList<>();
-	private String name;
 	protected double accuracy, evasiveness, health, maxHealth, speed, strength;
 
-	public BasicEntity(String name, int HP, int strength, int speed, int accuracy, int evasiveness, List<String> attacks) {
+	private final int BASE_ACCURACY, BASE_EVASIVENESS, BASE_HP, BASE_SPEED, BASE_STRENGTH;
+	private int xp;
+	private List<Attack> attacks = new ArrayList<>();
+	private String name;
+
+	public BasicEntity(String name, int level, int HP, int strength, int speed, int accuracy, int evasiveness, List<String> attacks) {
 		this.name = name;
-		setHealth(HP);
-		setMaxHealth(HP);
-		setStrength(strength);
-		setSpeed(speed);
-		setAccuracy(accuracy);
-		setEvasiveness(evasiveness);
+
+		BASE_ACCURACY = accuracy;
+		BASE_EVASIVENESS = evasiveness;
+		BASE_HP = HP;
+		BASE_SPEED = speed;
+		BASE_STRENGTH = strength;
+
+		setXP(findXP(level));
+		determineStats();
 
 		if (attacks != null)
 			for (String attack : attacks)
@@ -66,6 +74,14 @@ public class BasicEntity {
 		return Enemies.getEnemyType(name);
 	}
 
+	public int getLevel() {
+		return findLevel(xp);
+	}
+
+	public int getXP() {
+		return xp;
+	}
+
 	public List<Attack> getAttacks() {
 		return attacks;
 	}
@@ -85,6 +101,21 @@ public class BasicEntity {
 
 	public void addAttack(Attack attack) {
 		attacks.add(attack);
+	}
+
+	public void addXP(int xp) {
+		setXP(getXP() + xp);
+	}
+
+	public void determineStats() {
+		int level = findLevel(xp);
+
+		setHealth(findStat(level, BASE_HP));
+		setMaxHealth(findStat(level, BASE_HP));
+		setStrength(findStat(level, BASE_STRENGTH));
+		setSpeed(findStat(level, BASE_SPEED));
+		setAccuracy(BASE_ACCURACY);
+		setEvasiveness(BASE_EVASIVENESS);
 	}
 
 	public void hit(double damage) {
@@ -121,5 +152,14 @@ public class BasicEntity {
 
 	public void setStrength(double strength) {
 		this.strength = strength;
+	}
+
+	public void setXP(int xp) {
+		if (getLevel() > findLevel(xp)) {
+			this.xp = xp;
+			determineStats();
+			return;
+		}
+		this.xp = xp;
 	}
 }

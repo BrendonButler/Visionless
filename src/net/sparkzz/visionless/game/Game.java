@@ -37,20 +37,11 @@ public class Game {
 	public static void newGame() {
 		setup();
 
-		player.setHealth(20);
-		player.setMaxHealth(20);
-		player.setStrength(6);
-		player.setMagic(2);
-		player.setSpeed(6);
-		player.setAccuracy(80);
-		player.setEvasiveness(20);
-		player.addAttack(Attacks.get("punch"));
-
 		Battle battle = new Battle();
 
 		battle.startBattle(player, Enemies.getEnemy(Enemies.Enemy.ZOMBIE));
 
-		player.setHealth(player.getMaxHealth());
+		player.setHealth(player.getMaxHealth()); // TODO: player's health is not being set here
 
 		Menu.gameMenu();
 	}
@@ -84,23 +75,23 @@ public class Game {
 
 	private static void createEnemies() {
 		// Construct enemies
-		BasicEntity bat = new BasicEntity("bat", 12, 4, 10, 90, 30, new ArrayList<String>() {{
+		BasicEntity bat = new BasicEntity("bat", 1, 12, 4, 10, 90, 30, new ArrayList<String>() {{
 			add("bite");
 		}});
 
-		BasicEntity skeleton = new BasicEntity("skeleton", 14, 5, 5, 70, 30, new ArrayList<String>() {{
+		BasicEntity skeleton = new BasicEntity("skeleton", 1, 14, 5, 5, 70, 30, new ArrayList<String>() {{
 			add("punch");
 		}});
 
-		BasicEntity zombie = new BasicEntity("zombie", 15, 6, 4, 60, 5, new ArrayList<String>() {{
+		BasicEntity zombie = new BasicEntity("zombie", 1, 15, 6, 4, 60, 5, new ArrayList<String>() {{
 			add("punch");
 		}});
 
-		MagicEntity magicBat = new MagicEntity("magic_bat", 10, 3, 12, 10, 60, 60, new ArrayList<String>() {{
+		MagicEntity magicBat = new MagicEntity("magic_bat", 1, 10, 3, 12, 10, 60, 60, new ArrayList<String>() {{
 			add("sludge");
 		}});
 
-		MagicEntity wizard = new MagicEntity("wizard", 14, 4, 20, 6, 65, 70, new ArrayList<String>() {{
+		MagicEntity wizard = new MagicEntity("wizard", 1, 14, 4, 20, 6, 65, 70, new ArrayList<String>() {{
 			add("punch");
 			add("sludge");
 		}});
@@ -147,17 +138,15 @@ public class Game {
 
 		if (!config.isEmpty())
 			player = new Player(username,
-					config.getInteger("Player.Health"),
-					config.getInteger("Player.Max_Health"),
-					config.getInteger("Player.Strength"),
-					config.getInteger("Player.Magic"),
-					config.getInteger("Player.Speed"),
-					config.getInteger("Player.Accuracy"),
-					config.getInteger("Player.Evasiveness"),
+					config.getInteger("Player.Stats.XP"), config.getInteger("Player.Health"),
+					20, 6, 6, 8, 80, 20,
 					new ArrayList<String>() {{
 						for (String attack : (List<String>) config.getList("Player.Attacks"))
 							add(attack);
 					}});
-		else player = new Player(username);
+		else player = new Player(username, 0, 20, 20, 6, 6, 8, 80, 20,
+					new ArrayList<String>() {{
+						add("punch");
+					}});
 	}
 }
