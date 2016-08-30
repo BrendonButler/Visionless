@@ -39,6 +39,13 @@ public class Enemies {
 		return enemies.get(enemy);
 	}
 
+	public static Enemy getEnemyType(String enemy) {
+		for (Enemy curEnemy : Enemy.values())
+			if (curEnemy.getName().equalsIgnoreCase(enemy))
+				return curEnemy;
+		return null;
+	}
+
 	public static List<BasicEntity> getAllEnemies() {
 		return new ArrayList<>(enemies.values());
 	}

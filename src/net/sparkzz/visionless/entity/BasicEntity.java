@@ -62,6 +62,10 @@ public class BasicEntity {
 		return strength;
 	}
 
+	public Enemies.Enemy getType() {
+		return Enemies.getEnemyType(name);
+	}
+
 	public List<Attack> getAttacks() {
 		return attacks;
 	}

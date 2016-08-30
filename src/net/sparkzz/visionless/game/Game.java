@@ -72,6 +72,10 @@ public class Game {
 		config.save();
 	}
 
+	private static void createAchievements() {
+		Stats.addAchievement("first_kill", new Achievement("ach_first_kill", "ach_first_kill_desc"));
+	}
+
 	private static void createAttacks() {
 		Attacks.add(new Attack("bite", 50, 95, Attacks.AttackType.PHYSICAL));
 		Attacks.add(new Attack("punch", 60, 95, Attacks.AttackType.PHYSICAL));
@@ -112,27 +116,32 @@ public class Game {
 	private static void setup() {
 		Console.clear();
 
-		// name localization
-		Map<String, String> names = new HashMap<>();
+		// localization
+		Map<String, String> english = new HashMap<>();
+
+		// achievements
+		english.put("ach_first_kill", "First Kill!");
+		english.put("ach_first_kill_desc", "Get your first kill.");
 
 		// entities
-		names.put("bat", "Bat");
-		names.put("magic_bat", "Magic Bat");
-		names.put("skeleton", "Skeleton");
-		names.put("wizard", "Wizard");
-		names.put("zombie", "Zombie");
+		english.put("bat", "Bat");
+		english.put("magic_bat", "Magic Bat");
+		english.put("skeleton", "Skeleton");
+		english.put("wizard", "Wizard");
+		english.put("zombie", "Zombie");
 
 		// attacks
-		names.put("bite", "Bite");
-		names.put("punch", "Punch");
-		names.put("sludge", "Sludge");
+		english.put("bite", "Bite");
+		english.put("punch", "Punch");
+		english.put("sludge", "Sludge");
 
-		Languages.addLanguage("names", names);
-		Languages.setLanguage("names");
+		Languages.addLanguage("english", english);
+		Languages.setLanguage("english");
 
 		String username = Console.prompt("What is your name?%n> ");
 		config = new JSONConfig(new File(System.getProperty("user.dir") + "/saves"), username.trim());
 
+		createAchievements();
 		createAttacks();
 		createEnemies();
 

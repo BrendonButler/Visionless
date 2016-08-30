@@ -15,6 +15,28 @@ import java.util.Random;
  */
 public class Battle {
 
+	private boolean continueBattle(BasicEntity attacker, BasicEntity target, String lastAttacks) {
+		BasicEntity[] entities = new BasicEntity[2];
+		entities[0] = attacker;
+		entities[1] = target;
+
+		for (int i = 0; i < entities.length; i++) {
+			if (entities[i].getHealth() == 0) {
+				header(attacker, target, "%n" + lastAttacks);
+
+				if (i == 0) Console.outf("%s won!%n", target.getName());
+				else Console.outf("%s won!%n", attacker.getName());
+
+				target.setHealth(target.getMaxHealth());
+
+				Console.prompt("%nType any key to continue:%n> ");
+				Menu.gameMenu();
+				return false;
+			}
+		}
+		return true;
+	}
+
 	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
 	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
 		if (attack.getAccuracy() == 0) return true;
@@ -29,6 +51,31 @@ public class Battle {
 
 		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
 		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
+	}
+
+	private int calculateFasterEntity(BasicEntity first, BasicEntity second) {
+		if (first.getSpeed() > second.getSpeed())
+			return 0;
+		else if (first.getSpeed() < second.getSpeed())
+			return 1;
+		else {
+			Random random = new Random();
+
+			if (random.nextInt(1) == 0)
+				return 0;
+			else return 1;
+		}
+	}
+
+	private String attack(BasicEntity attacker, BasicEntity target) {
+		Attack attack = attacker.attack();
+		int damage = 0;
+
+		if (isHit(attacker, target, attack)) {
+			damage = calculateDamage(attacker, target, attack);
+			target.hit(damage);
+			return String.format("%s used %s and dealt %s damage!%n", attacker.getName(), attack.getName(), damage);
+		} else return String.format("%s's attack missed!%n");
 	}
 
 	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
@@ -53,79 +100,42 @@ public class Battle {
 	}
 
 	public void startBattle(BasicEntity attacker, BasicEntity target) {
+		Attack attack = null;
 		boolean continueBattle = true;
+		int damage = 0;
 		String lastAttacks = "";
 
-		// TODO: clean this up
 		while (continueBattle) {
-			header(attacker, target, lastAttacks);
-			Attack[] attacks = new Attack[2];
-			BasicEntity[] fighters = new BasicEntity[2];
-			int first, second;
-
-			fighters[0] = attacker;
-			fighters[1] = target;
-
-			attacks[0] = fighters[0].attack();
-			attacks[1] = fighters[1].attack();
-
-			if (attacker.getSpeed() > target.getSpeed()) {
-				first = 0;
-				second = 1;
-			} else if (attacker.getSpeed() < attacker.getSpeed()) {
-				first = 1;
-				second = 0;
-			} else {
-				Random random = new Random();
-
-				if (random.nextInt(1) == 0) {
-					first = 0;
-					second = 1;
-				} else {
-					first = 1;
-					second = 0;
-				}
+			if (lastAttacks.equals("")) header(attacker, target, lastAttacks);
+			else header(attacker, target, "%n" + lastAttacks);
+			
+			if (calculateFasterEntity(attacker, target) == 0)
+				lastAttacks = attack(attacker, target);
+			else if (calculateFasterEntity(attacker, target) == 1)
+				lastAttacks = attack(target, attacker);
+			else {
+				Random nextAttacker = new Random();
+				
+				if (nextAttacker.nextInt(1) == 0)
+					lastAttacks = attack(attacker, target);
+				else lastAttacks = attack(target, attacker);
 			}
 
-			if (isHit(fighters[first], fighters[second], attacks[first])) {
-				int damage = calculateDamage(fighters[first], fighters[second], attacks[first]);
-				fighters[second].hit(damage);
-				lastAttacks = String.format("%n%s used %s and dealt %s damage!%n", fighters[first].getName(), attacks[first].getName(), damage);
+			if (!continueBattle(attacker, target, lastAttacks)) break;
 
-				if (fighters[second].getHealth() == 0) {
-					header(attacker, target, lastAttacks);
-					Console.outf("%s won!%n", fighters[first].getName());
+			if (calculateFasterEntity(attacker, target) == 1)
+				lastAttacks += attack(attacker, target);
+			else if (calculateFasterEntity(attacker, target) == 0)
+				lastAttacks += attack(target, attacker);
+			else {
+				Random nextAttacker = new Random();
 
-					if (!(fighters[first] instanceof Player))
-						fighters[first].setHealth(fighters[first].getMaxHealth());
-					if (!(fighters[second] instanceof Player))
-						fighters[second].setHealth(fighters[second].getMaxHealth());
+				if (nextAttacker.nextInt(1) == 1)
+					lastAttacks += attack(attacker, target);
+				else lastAttacks += attack(target, attacker);
+			}
 
-					Console.prompt("%nType any key to continue:%n> ");
-					Menu.gameMenu();
-					return;
-				}
-			} else lastAttacks = String.format("%n%s's attack missed!%n", fighters[first].getName());
-
-			if (isHit(fighters[second], fighters[first], attacks[second])) {
-				int damage = calculateDamage(fighters[second], fighters[first], attacks[second]);
-				fighters[first].hit(damage);
-				lastAttacks += String.format("%s used %s and dealt %s damage!%n", fighters[second].getName(), attacks[second].getName(), damage);
-
-				if (fighters[first].getHealth() == 0) {
-					header(attacker, target, lastAttacks);
-					Console.outf("%s won!%n", fighters[second].getName());
-
-					if (!(fighters[first] instanceof Player))
-						fighters[first].setHealth(fighters[first].getMaxHealth());
-					if (!(fighters[second] instanceof Player))
-						fighters[second].setHealth(fighters[second].getMaxHealth());
-
-					Console.prompt("%nType any key to continue:%n> ");
-					Menu.gameMenu();
-					return;
-				}
-			} else lastAttacks += String.format("%s's attack missed!%n", fighters[second].getName());
+			if (!continueBattle(attacker, target, lastAttacks)) break;
 		}
 	}
 }
