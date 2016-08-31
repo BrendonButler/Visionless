@@ -140,6 +140,10 @@ public class Menu {
 
 		switch (responseID) {
 			case 1:
+				if (Game.started) {
+					gameMenu();
+					break;
+				}
 				loadMenu();
 				break;
 			default:
