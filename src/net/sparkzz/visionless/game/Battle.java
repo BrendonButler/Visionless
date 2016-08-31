@@ -5,10 +5,11 @@ import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
 import net.sparkzz.visionless.entity.Enemies;
 import net.sparkzz.visionless.entity.MagicEntity;
-import net.sparkzz.visionless.entity.Player;
 
 import java.util.List;
 import java.util.Random;
+
+import static net.sparkzz.visionless.utils.MathHelper.*;
 
 /**
  * @author Brendon Butler
@@ -37,17 +38,24 @@ public class Battle {
 		return true;
 	}
 
-	// TODO: accuracy numbers are always the same & algorithm doesn't work anyways
 	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
-		if (attack.getAccuracy() == 0) return true;
+		Random chance = new Random();
+		int hit = chance.nextInt(100);
 
-		Console.outln("Accuracy: " + ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+		Console.outln(hit + "");
 
-		return (1 < ((attack.getAccuracy() * (attacker.getAccuracy() / target.getEvasiveness()) / 100)));
+		// if random number between 0 & 100 is less than the average of the attacker's & the attack's accuracy, return true
+		if (hit < average(attacker.getAccuracy(), attack.getAccuracy()))
+			return true;
+		else return false;
 	}
 
 	private int calculateDamage(BasicEntity attacker, BasicEntity target, Attack attack) {
+		Random additionalDamage = new Random();
+
 		double damage = attack.getType() == Attacks.AttackType.MAGIC ? ((MagicEntity) attacker).getMagic() * attack.getDamage() / 100 : attacker.getStrength() * attack.getDamage() / 100;
+
+		damage += additionalDamage.nextInt((int) attacker.getStrength() / 4);
 
 		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
 		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
@@ -69,13 +77,13 @@ public class Battle {
 
 	private String attack(BasicEntity attacker, BasicEntity target) {
 		Attack attack = attacker.attack();
-		int damage = 0;
+		int damage;
 
 		if (isHit(attacker, target, attack)) {
 			damage = calculateDamage(attacker, target, attack);
 			target.hit(damage);
 			return String.format("%s used %s and dealt %s damage!%n", attacker.getName(), attack.getName(), damage);
-		} else return String.format("%s's attack missed!%n");
+		} else return String.format("%s's attack missed!%n", attacker.getName());
 	}
 
 	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
@@ -100,9 +108,7 @@ public class Battle {
 	}
 
 	public void startBattle(BasicEntity attacker, BasicEntity target) {
-		Attack attack = null;
 		boolean continueBattle = true;
-		int damage = 0;
 		String lastAttacks = "";
 
 		while (continueBattle) {

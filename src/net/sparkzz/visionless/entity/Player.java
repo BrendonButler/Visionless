@@ -6,7 +6,9 @@ import net.sparkzz.visionless.game.Attack;
 import net.sparkzz.visionless.game.Attacks;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static net.sparkzz.visionless.game.Game.config;
 import static net.sparkzz.visionless.utils.MathHelper.*;
@@ -16,12 +18,14 @@ import static net.sparkzz.visionless.utils.MathHelper.*;
  */
 public class Player extends MagicEntity {
 
-	private List<Attack> attacks = new ArrayList<>();
+	private Set<Attack> attacks = new HashSet<>();
 
-	public Player(String name, int xp, int health, int maxHealth, int strength, int magic, int speed, int accuracy, int evasiveness, List<String> attacks) {
-		super(name, findLevel(xp), maxHealth, strength, magic, speed, accuracy, evasiveness, null);
+	public Player(String name, int xp, int health, int maxHealth, int strength, int magic, int speed, int accuracy, List<String> attacks) {
+		super(name, findLevel(xp), maxHealth, strength, magic, speed, accuracy, null);
+		super.xp = xp;
 
-		setHealth(health);
+		if (health != maxHealth)
+			setHealth(health);
 
 		for (String attack : attacks)
 			addAttack(Attacks.get(attack));
@@ -46,7 +50,14 @@ public class Player extends MagicEntity {
 				responseID = Integer.parseInt(response);
 
 		} while (responseID == 0 || responseID > attacks.size());
-		return attacks.get(responseID - 1);
+		return getAttack(responseID - 1);
+	}
+
+	@Override
+	public Attack getAttack(int attack) {
+		List<Attack> availableAttacks = new ArrayList<>(attacks);
+
+		return availableAttacks.get(attack);
 	}
 
 	public int getXPNeeded() {
@@ -54,7 +65,7 @@ public class Player extends MagicEntity {
 	}
 
 	@Override
-	public List<Attack> getAttacks() {
+	public Set<Attack> getAttacks() {
 		return attacks;
 	}
 
@@ -78,12 +89,6 @@ public class Player extends MagicEntity {
 	public void setAccuracy(double accuracy) {
 		config.set("Player.Accuracy", (int) accuracy);
 		super.setAccuracy(accuracy);
-	}
-
-	@Override
-	public void setEvasiveness(double evasiveness) {
-		config.set("Player.Evasiveness", (int) evasiveness);
-		super.setEvasiveness(evasiveness);
 	}
 
 	@Override

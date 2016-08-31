@@ -7,19 +7,20 @@ import static java.lang.Math.*;
  */
 public class MathHelper {
 
-	/*
-	 * 100  - base xp
-	 * 2.05 - factor
-	 *
-	 * ref: http://gamedev.stackexchange.com/questions/8965/how-to-implement-an-experience-system
-	 * ref: http://staff.argyll.epsb.ca/jreed/math30p/logarithms/growth.htm
-	 */
-	public static int findXP(int level) {
-		return (int) floor(100 * pow(level, 2));
+	public static double average(double... numbers) {
+		int i = 0, total = 0;
+
+		for (double number : numbers) {
+			total += number;
+			i++;
+		}
+
+		return total / i;
 	}
 
-	public static int findStat(int level, int base) {
-		return (int) floor((base * 2 * level + 50) / 10);
+	public static int findHPStat(int level, int base) {
+		if (level <= 1) return base;
+		return findStat(level, base) + 5;
 	}
 
 	/*
@@ -36,5 +37,22 @@ public class MathHelper {
 	public static int findLevel(int xp) {
 		if (xp >= findXP(100)) return 100; // 100 - level
 		return (int) floor(sqrt(xp / 100)) + 1;
+	}
+
+	public static int findStat(int level, int base) {
+		if (level <= 1) return base;
+		return (int) floor(base + (base * 2 + 50) * level / 100 + level);
+	}
+
+	/*
+	 * 100  - base xp
+	 * 2.05 - factor
+	 *
+	 * ref: http://gamedev.stackexchange.com/questions/8965/how-to-implement-an-experience-system
+	 * ref: http://staff.argyll.epsb.ca/jreed/math30p/logarithms/growth.htm
+	 */
+	public static int findXP(int level) {
+		if (level <= 1) return 0;
+		return (int) floor(100 * pow(level - 1, 2));
 	}
 }

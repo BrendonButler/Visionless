@@ -3,9 +3,7 @@ package net.sparkzz.visionless.entity;
 import net.sparkzz.visionless.game.Attack;
 import net.sparkzz.visionless.game.Attacks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static net.sparkzz.visionless.utils.MathHelper.*;
 
@@ -14,18 +12,17 @@ import static net.sparkzz.visionless.utils.MathHelper.*;
  */
 public class BasicEntity {
 
-	protected double accuracy, evasiveness, health, maxHealth, speed, strength;
+	protected double accuracy, health, maxHealth, speed, strength;
+	protected int xp;
 
-	private final int BASE_ACCURACY, BASE_EVASIVENESS, BASE_HP, BASE_SPEED, BASE_STRENGTH;
-	private int xp;
-	private List<Attack> attacks = new ArrayList<>();
+	private final int BASE_ACCURACY, BASE_HP, BASE_SPEED, BASE_STRENGTH;
+	private Set<Attack> attacks = new HashSet<>();
 	private String name;
 
-	public BasicEntity(String name, int level, int HP, int strength, int speed, int accuracy, int evasiveness, List<String> attacks) {
+	public BasicEntity(String name, int level, int HP, int strength, int speed, int accuracy, List<String> attacks) {
 		this.name = name;
 
 		BASE_ACCURACY = accuracy;
-		BASE_EVASIVENESS = evasiveness;
 		BASE_HP = HP;
 		BASE_SPEED = speed;
 		BASE_STRENGTH = strength;
@@ -41,17 +38,17 @@ public class BasicEntity {
 	public Attack attack() {
 		Random random = new Random();
 
-		int randAttack = random.nextInt(attacks.size());
+		return getAttack(random.nextInt(attacks.size()));
+	}
 
-		return attacks.get(randAttack);
+	public Attack getAttack(int attack) {
+		List<Attack> availableAttacks = new ArrayList<>(attacks);
+
+		return availableAttacks.get(attack);
 	}
 
 	public double getAccuracy() {
 		return accuracy;
-	}
-
-	public double getEvasiveness() {
-		return evasiveness;
 	}
 
 	public double getHealth() {
@@ -82,7 +79,7 @@ public class BasicEntity {
 		return xp;
 	}
 
-	public List<Attack> getAttacks() {
+	public Set<Attack> getAttacks() {
 		return attacks;
 	}
 
@@ -110,12 +107,11 @@ public class BasicEntity {
 	public void determineStats() {
 		int level = findLevel(xp);
 
-		setHealth(findStat(level, BASE_HP));
+		setHealth(findHPStat(level, BASE_HP));
 		setMaxHealth(findStat(level, BASE_HP));
 		setStrength(findStat(level, BASE_STRENGTH));
 		setSpeed(findStat(level, BASE_SPEED));
 		setAccuracy(BASE_ACCURACY);
-		setEvasiveness(BASE_EVASIVENESS);
 	}
 
 	public void hit(double damage) {
@@ -128,10 +124,6 @@ public class BasicEntity {
 
 	public void setAccuracy(double accuracy) {
 		this.accuracy = accuracy;
-	}
-
-	public void setEvasiveness(double evasiveness) {
-		this.evasiveness = evasiveness;
 	}
 
 	public void setHealth(double health) {
