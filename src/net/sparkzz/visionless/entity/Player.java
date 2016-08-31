@@ -22,7 +22,7 @@ public class Player extends MagicEntity {
 
 	public Player(String name, int xp, int health, int maxHealth, int strength, int magic, int speed, int accuracy, List<String> attacks) {
 		super(name, findLevel(xp), maxHealth, strength, magic, speed, accuracy, null);
-		super.xp = xp;
+		setXP(xp);
 
 		if (health != maxHealth)
 			setHealth(health);
@@ -61,6 +61,7 @@ public class Player extends MagicEntity {
 	}
 
 	public int getXPNeeded() {
+		if (getLevel() >= 100) return 0;
 		return (int) Math.floor(findXP(getLevel() + 1) - getXP());
 	}
 

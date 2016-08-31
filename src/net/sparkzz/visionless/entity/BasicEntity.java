@@ -147,6 +147,8 @@ public class BasicEntity {
 	}
 
 	public void setXP(int xp) {
+		if (xp < 0) xp = 0;
+
 		if (getLevel() > findLevel(xp)) {
 			this.xp = xp;
 			determineStats();

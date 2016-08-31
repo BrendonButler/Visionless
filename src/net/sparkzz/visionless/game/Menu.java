@@ -160,7 +160,11 @@ public class Menu {
 		Console.clear();
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, String.format("Visionless - %s", player.getName()));
+		if (player.getLevel() < 100)
+			Console.align(Alignment.CENTER, String.format("LVL %s | %s XP needed for next level", player.getLevel(), player.getXPNeeded()));
+		else Console.align(Alignment.CENTER, String.format("LVL %s", player.getLevel()));
 		Console.fillLine('-');
+		Console.outf("XP: %s%n", player.getXP());
 		Console.outf("HP: %s/%s%n", (int) player.getHealth(), (int) player.getMaxHealth());
 		Console.outf("STR: %s%n", (int) player.getStrength());
 		Console.outf("MGK: %s%n", (int) player.getMagic());
