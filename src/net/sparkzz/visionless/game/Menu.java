@@ -5,6 +5,10 @@ import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.modest.utils.Validate;
 import net.sparkzz.visionless.entity.Player;
 
+import static net.sparkzz.visionless.utils.MathHelper.findHPStat;
+import static net.sparkzz.visionless.utils.MathHelper.findLevel;
+import static net.sparkzz.visionless.utils.MathHelper.findStat;
+
 /**
  * @author Brendon Butler
  */
@@ -85,6 +89,43 @@ public class Menu {
 				mainMenu();
 				break;
 		}
+	}
+
+	public static void levelUpMenu(int xp) {
+		Player player = Game.getPlayer();
+
+		Console.clear();
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, String.format("%s", player.getName()));
+		Console.align(Alignment.CENTER, String.format("LVL %s", findLevel(player.getXP() + xp)));
+		Console.fillLine('-');
+		Console.outln("You have leveled up!");
+		Console.fillLine('-');
+		Console.outf("HP: %s + %s%n", (int) player.getMaxHealth(), (int) (findHPStat(findLevel(player.getXP() + xp), (int) player.getBaseHealth()) - player.getMaxHealth()));
+		Console.outf("STR: %s + %s%n", (int) player.getStrength(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseStrength()) - player.getStrength()));
+		Console.outf("MGK: %s + %s%n", (int) player.getMagic(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseMagic()) - player.getMagic()));
+		Console.outf("SPD: %s + %s%n", (int) player.getSpeed(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseSpeed()) - player.getSpeed()));
+		Console.fillLine('=');
+
+		Console.prompt();
+
+		player.setXP(player.getXP() + xp);
+		player.determineStats();
+
+		Console.clear();
+		Console.fillLine('=');
+		Console.align(Alignment.CENTER, String.format("%s", player.getName()));
+		if (player.getLevel() < 100)
+			Console.align(Alignment.CENTER, String.format("LVL %s | %s XP needed for next level", player.getLevel(), player.getXPNeeded()));
+		else Console.align(Alignment.CENTER, String.format("LVL %s", player.getLevel()));
+		Console.fillLine('-');
+		Console.outf("HP: %s%n", (int) player.getMaxHealth());
+		Console.outf("STR: %s%n", (int) player.getStrength());
+		Console.outf("MGK: %s%n", (int) player.getMagic());
+		Console.outf("SPD: %s%n", (int) player.getSpeed());
+		Console.fillLine('=');
+
+		Console.prompt();
 	}
 
 	public static void loadMenu() {

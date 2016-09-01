@@ -5,6 +5,7 @@ import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.visionless.entity.BasicEntity;
 import net.sparkzz.visionless.entity.Enemies;
 import net.sparkzz.visionless.entity.MagicEntity;
+import net.sparkzz.visionless.entity.Player;
 
 import java.util.List;
 import java.util.Random;
@@ -16,36 +17,34 @@ import static net.sparkzz.visionless.utils.MathHelper.*;
  */
 public class Battle {
 
-	private boolean continueBattle(BasicEntity attacker, BasicEntity target, String lastAttacks) {
-		BasicEntity[] entities = new BasicEntity[2];
-		entities[0] = attacker;
-		entities[1] = target;
-
-		for (int i = 0; i < entities.length; i++) {
-			if (entities[i].getHealth() == 0) {
-				header(attacker, target, "%n" + lastAttacks);
-
-				if (i == 0) Console.outf("%s won!%n", target.getName());
-				else Console.outf("%s won!%n", attacker.getName());
-
-				target.setHealth(target.getMaxHealth());
-
-				Console.prompt("%nType any key to continue:%n> ");
-				Menu.gameMenu();
-				return false;
+	private boolean continueBattle(Player player, BasicEntity target, String lastAttacks) {
+		if (player.getHealth() == 0 || target.getHealth() == 0) {
+			int xp = 0;
+			if (player.getHealth() == 0) {
+				lastAttacks += String.format("%n%s won!%n", target.getName());
+				header(player, target, "%n" + lastAttacks);
+			} else if (target.getHealth() == 0) {
+				xp = earnedXP(target);
+				lastAttacks += String.format("%s won!%n", player.getName());
+				lastAttacks += String.format("You have gained %s XP!%n", xp);
+				header(player, target, "%n" + lastAttacks);
 			}
+
+			Console.prompt();
+			player.addXP(xp + 10000);
+			player.setHealth(player.getMaxHealth());
+			target.setHealth(target.getMaxHealth());
+			Menu.gameMenu();
+			return false;
 		}
 		return true;
 	}
 
-	private boolean isHit(BasicEntity attacker, BasicEntity target, Attack attack) {
+	private boolean isHit(BasicEntity attacker, Attack attack) {
 		Random chance = new Random();
-		int hit = chance.nextInt(100);
-
-		Console.outln(hit + "");
 
 		// if random number between 0 & 100 is less than the average of the attacker's & the attack's accuracy, return true
-		if (hit < average(attacker.getAccuracy(), attack.getAccuracy()))
+		if (chance.nextInt(100) < average(attacker.getAccuracy(), attack.getAccuracy()))
 			return true;
 		else return false;
 	}
@@ -55,7 +54,9 @@ public class Battle {
 
 		double damage = attack.getType() == Attacks.AttackType.MAGIC ? ((MagicEntity) attacker).getMagic() * attack.getDamage() / 100 : attacker.getStrength() * attack.getDamage() / 100;
 
-		damage += additionalDamage.nextInt((int) attacker.getStrength() / 4);
+		if (attacker instanceof MagicEntity)
+			damage += additionalDamage.nextInt((int) ((MagicEntity) attacker).getMagic() / 4);
+		else damage += additionalDamage.nextInt((int) attacker.getStrength() / 4);
 
 		// if damage dealt is greater than the target's max health, set the damage dealt to the targets current health, else return original damage dealt
 		return (int) Math.round((damage > target.getHealth() ? target.getHealth() : damage));
@@ -75,11 +76,31 @@ public class Battle {
 		}
 	}
 
+	private int earnedXP(BasicEntity target) {
+		int xp = (int) (10 + target.getLevel() * 5 * .5);
+
+		switch (target.getType()) {
+			case MAGIC_BAT:
+				xp *= 1.5;
+				break;
+			case SKELETON:
+				xp *= 1.25;
+				break;
+			case WIZARD:
+				xp *= 2;
+				break;
+			default:
+				break;
+		}
+
+		return xp;
+	}
+
 	private String attack(BasicEntity attacker, BasicEntity target) {
 		Attack attack = attacker.attack();
 		int damage;
 
-		if (isHit(attacker, target, attack)) {
+		if (isHit(attacker, attack)) {
 			damage = calculateDamage(attacker, target, attack);
 			target.hit(damage);
 			return String.format("%s used %s and dealt %s damage!%n", attacker.getName(), attack.getName(), damage);
@@ -100,48 +121,48 @@ public class Battle {
 		Console.fillLine('=');
 	}
 
-	public void randomBattle(BasicEntity attacker) {
+	public void randomBattle(Player player) {
 		Random rand = new Random();
 		List<BasicEntity> enemies = Enemies.getAllEnemies();
 
-		startBattle(attacker, enemies.get(rand.nextInt(enemies.size())));
+		startBattle(player, enemies.get(rand.nextInt(enemies.size())));
 	}
 
-	public void startBattle(BasicEntity attacker, BasicEntity target) {
+	public void startBattle(Player player, BasicEntity target) {
 		boolean continueBattle = true;
 		String lastAttacks = "";
 
 		while (continueBattle) {
-			if (lastAttacks.equals("")) header(attacker, target, lastAttacks);
-			else header(attacker, target, "%n" + lastAttacks);
+			if (lastAttacks.equals("")) header(player, target, lastAttacks);
+			else header(player, target, "%n" + lastAttacks);
 
-			if (calculateFasterEntity(attacker, target) == 0)
-				lastAttacks = attack(attacker, target);
-			else if (calculateFasterEntity(attacker, target) == 1)
-				lastAttacks = attack(target, attacker);
+			if (calculateFasterEntity(player, target) == 0)
+				lastAttacks = attack(player, target);
+			else if (calculateFasterEntity(player, target) == 1)
+				lastAttacks = attack(target, player);
 			else {
 				Random nextAttacker = new Random();
 
 				if (nextAttacker.nextInt(1) == 0)
-					lastAttacks = attack(attacker, target);
-				else lastAttacks = attack(target, attacker);
+					lastAttacks = attack(player, target);
+				else lastAttacks = attack(target, player);
 			}
 
-			if (!continueBattle(attacker, target, lastAttacks)) break;
+			if (!continueBattle(player, target, lastAttacks)) break;
 
-			if (calculateFasterEntity(attacker, target) == 1)
-				lastAttacks += attack(attacker, target);
-			else if (calculateFasterEntity(attacker, target) == 0)
-				lastAttacks += attack(target, attacker);
+			if (calculateFasterEntity(player, target) == 1)
+				lastAttacks += attack(player, target);
+			else if (calculateFasterEntity(player, target) == 0)
+				lastAttacks += attack(target, player);
 			else {
 				Random nextAttacker = new Random();
 
 				if (nextAttacker.nextInt(1) == 1)
-					lastAttacks += attack(attacker, target);
-				else lastAttacks += attack(target, attacker);
+					lastAttacks += attack(player, target);
+				else lastAttacks += attack(target, player);
 			}
 
-			if (!continueBattle(attacker, target, lastAttacks)) break;
+			if (!continueBattle(player, target, lastAttacks)) break;
 		}
 	}
 }

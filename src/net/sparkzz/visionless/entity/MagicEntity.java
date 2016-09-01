@@ -9,19 +9,39 @@ import static net.sparkzz.visionless.utils.MathHelper.findStat;
  */
 public class MagicEntity extends BasicEntity {
 
-	private final int BASE_ACCURACY, BASE_HP, BASE_MAGIC, BASE_SPEED, BASE_STRENGTH;
+	private final int BASE_MAGIC;
 	protected double magic;
 
 	public MagicEntity(String name, int level, int HP, int strength, int magic, int speed, int accuracy, List<String> attacks) {
 		super(name, level, HP, strength, speed, accuracy, attacks);
 
-		BASE_ACCURACY = accuracy;
-		BASE_HP = HP;
 		BASE_MAGIC = magic;
-		BASE_SPEED = speed;
-		BASE_STRENGTH = strength;
 
 		determineStats();
+	}
+
+	@Override
+	public double getBaseAccuracy() {
+		return BASE_ACCURACY;
+	}
+
+	@Override
+	public double getBaseHealth() {
+		return BASE_HP;
+	}
+
+	public double getBaseMagic() {
+		return BASE_MAGIC;
+	}
+
+	@Override
+	public double getBaseSpeed() {
+		return BASE_SPEED;
+	}
+
+	@Override
+	public double getBaseStrength() {
+		return BASE_STRENGTH;
 	}
 
 	public double getMagic() {

@@ -2,6 +2,7 @@ package net.sparkzz.visionless.entity;
 
 import net.sparkzz.visionless.game.Attack;
 import net.sparkzz.visionless.game.Attacks;
+import net.sparkzz.visionless.game.Menu;
 
 import java.util.*;
 
@@ -12,10 +13,10 @@ import static net.sparkzz.visionless.utils.MathHelper.*;
  */
 public class BasicEntity {
 
-	protected double accuracy, health, maxHealth, speed, strength;
-	protected int xp;
+	protected final int BASE_ACCURACY, BASE_HP, BASE_SPEED, BASE_STRENGTH;
 
-	private final int BASE_ACCURACY, BASE_HP, BASE_SPEED, BASE_STRENGTH;
+	private double accuracy, health, maxHealth, speed, strength;
+	private int xp;
 	private Set<Attack> attacks = new HashSet<>();
 	private String name;
 
@@ -45,6 +46,22 @@ public class BasicEntity {
 		List<Attack> availableAttacks = new ArrayList<>(attacks);
 
 		return availableAttacks.get(attack);
+	}
+
+	public double getBaseAccuracy() {
+		return BASE_ACCURACY;
+	}
+
+	public double getBaseHealth() {
+		return BASE_HP;
+	}
+
+	public double getBaseSpeed() {
+		return BASE_SPEED;
+	}
+
+	public double getBaseStrength() {
+		return BASE_STRENGTH;
 	}
 
 	public double getAccuracy() {
@@ -149,11 +166,6 @@ public class BasicEntity {
 	public void setXP(int xp) {
 		if (xp < 0) xp = 0;
 
-		if (getLevel() > findLevel(xp)) {
-			this.xp = xp;
-			determineStats();
-			return;
-		}
 		this.xp = xp;
 	}
 }

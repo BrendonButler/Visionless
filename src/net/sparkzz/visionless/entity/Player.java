@@ -4,6 +4,7 @@ import net.sparkzz.modest.io.console.Console;
 import net.sparkzz.modest.utils.Validate;
 import net.sparkzz.visionless.game.Attack;
 import net.sparkzz.visionless.game.Attacks;
+import net.sparkzz.visionless.game.Menu;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -76,7 +77,13 @@ public class Player extends MagicEntity {
 		attacks.add(attack);
 	}
 
+	@Override
 	public void addXP(int xp) {
+		if (getXPNeeded() <= xp && getLevel() != 100) {
+			Menu.levelUpMenu(xp);
+			return;
+		}
+
 		setXP(getXP() + xp);
 	}
 
