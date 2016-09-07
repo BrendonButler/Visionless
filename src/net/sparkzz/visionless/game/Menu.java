@@ -28,9 +28,9 @@ public class Menu {
 		Console.align(Alignment.CENTER, String.format("Visionless - %s", player.getName()));
 		Console.fillLine('-');
 		for (Attack attack : player.getAttacks())
-			Console.outf("%s: %sPWR | %sACY%n", attack.getName(), attack.getDamage(), attack.getAccuracy());
+			Console.outf("%s: %stag_pwr | %stag_acy%n", attack.getName(), attack.getDamage(), attack.getAccuracy());
 		Console.fillLine('=');
-		Console.outln("1) Back");
+		Console.outln("1) menu_back");
 
 		int responseID = 0;
 		String response = Console.prompt();
@@ -58,9 +58,9 @@ public class Menu {
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, String.format("Visionless - %s", player.getName()));
 		Console.fillLine('=');
-		Console.outln("1) Battle");
-		Console.outln("2) Stats");
-		Console.outln("3) Main Menu");
+		Console.outln("1) menu_battle");
+		Console.outln("2) menu_stats");
+		Console.outln("3) menu_main");
 
 		int responseID = 0;
 		String response = Console.prompt();
@@ -73,7 +73,7 @@ public class Menu {
 		switch (responseID) {
 			case 1:
 				if (player.getHealth() == 0) {
-					Console.outln("You must heal up first before battling again!");
+					Console.outln("must_heal_up");
 					player.setHealth(player.getMaxHealth());
 					gameMenu();
 				} else {
@@ -97,14 +97,14 @@ public class Menu {
 		Console.clear();
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, String.format("%s", player.getName()));
-		Console.align(Alignment.CENTER, String.format("LVL %s", findLevel(player.getXP() + xp)));
+		Console.align(Alignment.CENTER, String.format("tag_lvl %s", findLevel(player.getXP() + xp)));
 		Console.fillLine('-');
-		Console.outln("You have leveled up!");
+		Console.outln("leveled_up");
 		Console.fillLine('-');
-		Console.outf("HP: %s + %s%n", (int) player.getMaxHealth(), (int) (findHPStat(findLevel(player.getXP() + xp), (int) player.getBaseHealth()) - player.getMaxHealth()));
-		Console.outf("STR: %s + %s%n", (int) player.getStrength(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseStrength()) - player.getStrength()));
-		Console.outf("MGK: %s + %s%n", (int) player.getMagic(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseMagic()) - player.getMagic()));
-		Console.outf("SPD: %s + %s%n", (int) player.getSpeed(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseSpeed()) - player.getSpeed()));
+		Console.outf("tag_hp: %s + %s%n", (int) player.getMaxHealth(), (int) (findHPStat(findLevel(player.getXP() + xp), (int) player.getBaseHealth()) - player.getMaxHealth()));
+		Console.outf("tag_str: %s + %s%n", (int) player.getStrength(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseStrength()) - player.getStrength()));
+		Console.outf("tag_mgk: %s + %s%n", (int) player.getMagic(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseMagic()) - player.getMagic()));
+		Console.outf("tag_spd: %s + %s%n", (int) player.getSpeed(), (int) (findStat(findLevel(player.getXP() + xp), (int) player.getBaseSpeed()) - player.getSpeed()));
 		Console.fillLine('=');
 
 		Console.prompt();
@@ -116,13 +116,13 @@ public class Menu {
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, String.format("%s", player.getName()));
 		if (player.getLevel() < 100)
-			Console.align(Alignment.CENTER, String.format("LVL %s | %s XP needed for next level", player.getLevel(), player.getXPNeeded()));
-		else Console.align(Alignment.CENTER, String.format("LVL %s", player.getLevel()));
+			Console.align(Alignment.CENTER, String.format("tag_lvl %s | xp_needed", player.getLevel(), player.getXPNeeded()));
+		else Console.align(Alignment.CENTER, String.format("tag_lvl %s", player.getLevel()));
 		Console.fillLine('-');
-		Console.outf("HP: %s%n", (int) player.getMaxHealth());
-		Console.outf("STR: %s%n", (int) player.getStrength());
-		Console.outf("MGK: %s%n", (int) player.getMagic());
-		Console.outf("SPD: %s%n", (int) player.getSpeed());
+		Console.outf("tag_hp: %s%n", (int) player.getMaxHealth());
+		Console.outf("tag_str: %s%n", (int) player.getStrength());
+		Console.outf("tag_mgk: %s%n", (int) player.getMagic());
+		Console.outf("tag_spd: %s%n", (int) player.getSpeed());
 		Console.fillLine('=');
 
 		Console.prompt();
@@ -133,11 +133,11 @@ public class Menu {
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, "Visionless");
 		Console.fillLine('-');
-		Console.outln("What would you like to do?");
+		Console.outln("would_like_to_do");
 		Console.fillLine('=');
-		Console.outln("1) New Game");
-		Console.outln("2) Load Game");
-		Console.outln("3) Main Menu");
+		Console.outln("1) menu_new_game");
+		Console.outln("2) menu_load_game");
+		Console.outln("3) menu_main");
 
 		int responseID = 0;
 		String response = Console.prompt();
@@ -167,10 +167,10 @@ public class Menu {
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, "Visionless");
 		Console.fillLine('-');
-		Console.outln("What would you like to do?");
+		Console.outln("would_like_to_do");
 		Console.fillLine('=');
-		Console.outln("1) Play");
-		Console.outln("2) Quit");
+		Console.outln("1) menu_play");
+		Console.outln("2) menu_quit");
 
 		int responseID = 0;
 		String response = Console.prompt();
@@ -202,17 +202,17 @@ public class Menu {
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, String.format("Visionless - %s", player.getName()));
 		if (player.getLevel() < 100)
-			Console.align(Alignment.CENTER, String.format("LVL %s | %s XP needed for next level", player.getLevel(), player.getXPNeeded()));
-		else Console.align(Alignment.CENTER, String.format("LVL %s", player.getLevel()));
+			Console.align(Alignment.CENTER, String.format("tag_lvl %s | %s XP needed for next level", player.getLevel(), player.getXPNeeded()));
+		else Console.align(Alignment.CENTER, String.format("tag_lvl %s", player.getLevel()));
 		Console.fillLine('-');
-		Console.outf("XP: %s%n", player.getXP());
-		Console.outf("HP: %s/%s%n", (int) player.getHealth(), (int) player.getMaxHealth());
-		Console.outf("STR: %s%n", (int) player.getStrength());
-		Console.outf("MGK: %s%n", (int) player.getMagic());
-		Console.outf("SPD: %s%n", (int) player.getSpeed());
+		Console.outf("tag_xp: %s%n", player.getXP());
+		Console.outf("tag_hp: %s/%s%n", (int) player.getHealth(), (int) player.getMaxHealth());
+		Console.outf("tag_str: %s%n", (int) player.getStrength());
+		Console.outf("tag_mgk: %s%n", (int) player.getMagic());
+		Console.outf("tag_spd: %s%n", (int) player.getSpeed());
 		Console.fillLine('=');
-		Console.outln("1) Attacks");
-		Console.outln("2) Back");
+		Console.outln("1) menu_attacks");
+		Console.outln("2) menu_back");
 
 		int responseID = 0;
 		String response = Console.prompt();

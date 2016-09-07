@@ -21,17 +21,17 @@ public class Battle {
 		if (player.getHealth() == 0 || target.getHealth() == 0) {
 			int xp = 0;
 			if (player.getHealth() == 0) {
-				lastAttacks += String.format("%n%s won!%n", target.getName());
+				lastAttacks += String.format("%nplayer_won%n", target.getName());
 				header(player, target, "%n" + lastAttacks);
 			} else if (target.getHealth() == 0) {
 				xp = earnedXP(target);
-				lastAttacks += String.format("%s won!%n", player.getName());
-				lastAttacks += String.format("You have gained %s XP!%n", xp);
+				lastAttacks += String.format("player_won%n", player.getName());
+				lastAttacks += String.format("xp_gained%n", xp);
 				header(player, target, "%n" + lastAttacks);
 			}
 
 			Console.prompt();
-			player.addXP(xp + 10000);
+			player.addXP(xp);
 			player.setHealth(player.getMaxHealth());
 			target.setHealth(target.getMaxHealth());
 			Menu.gameMenu();
@@ -103,8 +103,8 @@ public class Battle {
 		if (isHit(attacker, attack)) {
 			damage = calculateDamage(attacker, target, attack);
 			target.hit(damage);
-			return String.format("%s used %s and dealt %s damage!%n", attacker.getName(), attack.getName(), damage);
-		} else return String.format("%s's attack missed!%n", attacker.getName());
+			return String.format("used_attack%n", attacker.getName(), attack.getName(), damage);
+		} else return String.format("attack_missed%n", attacker.getName());
 	}
 
 	private void header(BasicEntity attacker, BasicEntity target, String lastAttacks) {
@@ -112,8 +112,8 @@ public class Battle {
 		Console.fillLine('=');
 		Console.align(Alignment.CENTER, attacker.getName() + " vs " + target.getName());
 		Console.fillLine('-');
-		Console.outf("%s's Health: %s/%s%n", attacker.getName(), (int) attacker.getHealth(), (int) attacker.getMaxHealth());
-		Console.outf("%s's Health: %s/%s%n", target.getName(), (int) target.getHealth(), (int) target.getMaxHealth());
+		Console.outf("players_health: %s/%s%n", attacker.getName(), (int) attacker.getHealth(), (int) attacker.getMaxHealth());
+		Console.outf("players_health: %s/%s%n", target.getName(), (int) target.getHealth(), (int) target.getMaxHealth());
 
 		if (!lastAttacks.equals(""))
 			Console.out(lastAttacks);

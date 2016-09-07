@@ -107,30 +107,8 @@ public class Game {
 	private static void setup() {
 		Console.clear();
 
-		// localization
-		Map<String, String> english = new HashMap<>();
-
-		// achievements
-		english.put("ach_first_kill", "First Kill!");
-		english.put("ach_first_kill_desc", "Get your first kill.");
-
-		// entities
-		english.put("bat", "Bat");
-		english.put("magic_bat", "Magic Bat");
-		english.put("skeleton", "Skeleton");
-		english.put("wizard", "Wizard");
-		english.put("zombie", "Zombie");
-
-		// attacks
-		english.put("bite", "Bite");
-		english.put("punch", "Punch");
-		english.put("sludge", "Sludge");
-
-		Languages.addLanguage("english", english);
-		Languages.setLanguage("english");
-
-		String username = Console.prompt("What is your name?%n> ");
-		config = new JSONConfig(new File(System.getProperty("user.dir") + "/saves"), username.trim());
+		String username = Console.prompt("what_is_your_name%n> ");
+		config = new JSONConfig(new File(System.getProperty("user.dir") + Console.localize("/saves")), username.trim());
 
 		createAchievements();
 		createAttacks();
