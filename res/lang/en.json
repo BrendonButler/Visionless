@@ -1,0 +1,48 @@
+{
+    // achievements
+  "ach_first_kill": "First Kill!",
+  "ach_first_kill_desc": "Get your first kill.",
+    // entities
+  "bat": "Bat",
+  "magic_bat": "Magic Bat",
+  "skeleton": "Skeleton",
+  "wizard": "Wizard",
+  "zombie": "Zombie",
+    // attacks
+  "bite": "Bite",
+  "punch": "Punch",
+  "sludge": "Sludge",
+    // tags
+  "tag_acy": "ACY",
+  "tag_hp": "HP",
+  "tag_lvl": "LVL",
+  "tag_mgk": "MGK",
+  "tag_pwr": "PWR",
+  "tag_spd": "SPD",
+  "tag_str": "STR",
+  "tag_xp": "XP",
+    // menu items
+  "menu_attacks": "Attacks",
+  "menu_back": "Back",
+  "menu_battle": "Battle",
+  "menu_load_game": "Load Game",
+  "menu_main": "Main Menu",
+  "menu_new_game": "New Game",
+  "menu_play": "Play",
+  "menu_quit": "Quit",
+  "menu_stats": "Stats",
+    // questions
+  "would_like_to_do": "What would you like to do?",
+  "what_is_your_name": "What is your name?",
+    // statments/exclamations
+  "attack_missed": "%s's attack missed!",
+  "leveled_up": "You have leveled up!",
+  "must_heal_up": "You must heal up before continuing!",
+  "player_won": "%s won!",
+  "players_health": "%s's Health",
+  "used_attack": "%s used %s and dealt %d damage",
+  "xp_gained": "You have gained %d XP!",
+  "xp_needed": "%d tag_xp needed for next level",
+    // etc
+  "saves": "saves"
+}

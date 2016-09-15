@@ -6,7 +6,7 @@
 
     <groupId>net.sparkzz</groupId>
     <artifactId>Visionless</artifactId>
-    <version>0.1.11</version>
+    <version>0.16.28</version>
 
 	<build>
 		<plugins>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>net.sparkzz</groupId>
             <artifactId>ModestAPI</artifactId>
-            <version>1.0.6.15</version>
+            <version>1.0.7.18</version>
         </dependency>
     </dependencies>
 </project>
